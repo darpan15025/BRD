@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIT - Live Internet TV | Business Requirements Document</title>
+  <style>
+    :root {
+      --primary: #6b21a8;
+      --accent: #db2777;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --bg-alt: #f9fafb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--bg-alt);
+      padding: 2rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 3rem;
+    }
+    h1 { font-size: 2rem; color: var(--primary); margin-bottom: 0.25rem; }
+    h2 { font-size: 1.4rem; color: var(--primary); margin: 2rem 0 1rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.4rem; }
+    h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.75rem; }
+    h4 { font-size: 1rem; margin: 1rem 0 0.5rem; }
+    p { margin-bottom: 0.75rem; }
+    .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .meta-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+    .meta-table td, .meta-table th { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+    .meta-table th { background: var(--bg-alt); font-weight: 600; width: 180px; }
+    table.data { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    table.data th, table.data td { border: 1px solid var(--border); padding: 0.5rem 0.6rem; vertical-align: top; }
+    table.data th { background: #f3e8ff; color: var(--primary); font-weight: 600; }
+    table.data tr:nth-child(even) { background: var(--bg-alt); }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+    .flow-diagram {
+      background: #1e1b4b;
+      color: #e0e7ff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
+      margin: 1rem 0;
+    }
+    .note {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    a { color: var(--accent); }
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    @media print {
+      body { background: white; padding: 0; }
+      .container { box-shadow: none; padding: 1rem; }
+      h2 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Business Requirements Document (BRD)</h1>
+  <p class="subtitle">Tata Play Fiber Mobile Application (MAPP) — LIT (Live Internet TV) — Manage LIT Module</p>
+
+  <table class="meta-table">
+    <tr><th>Document Version</th><td>1.1</td></tr>
+    <tr><th>Date</th><td>September 17, 2026</td></tr>
+    <tr><th>Status</th><td>Draft</td></tr>
+    <tr><th>Feature</th><td>LIT — Live Internet TV (Manage LIT Module)</td></tr>
+    <tr><th>Design Reference</th><td><a href="https://www.figma.com/board/psByt5QSY6vvmuAOmExFz7/Login-Revamp?node-id=0-1">Login Revamp — FigJam (Manage LIT Section)</a></td></tr>
+    <tr><th>Design Scope</th><td>Manage LIT flows only (Change Plan + Cancel Plan)</td></tr>
+    <tr><th>Source Inputs</th><td>MAPP Scenario Matrix, FigJam Design (Manage LIT section)</td></tr>
+  </table>
+
+  <h2>1. Executive Summary</h2>
+  <p>Tata Play Fiber (TPF) is introducing <strong>LIT (Live Internet TV)</strong> as an add-on service within the Tata Play Fiber Mobile Application (MAPP). This BRD defines business, functional, integration, and UI requirements for the <strong>Manage LIT module</strong>, enabling existing Fiber + LIT subscribers to change or cancel their LIT plan.</p>
+  <p>Manage LIT is accessed from the Home screen Quick Actions via the <strong>Manage live TV</strong> tile <span class="badge">New</span>. The solution coordinates MAPP (frontend), HOBS (order orchestration), and the LIT platform (subscription lifecycle, pricing, proration).</p>
+
+  <h2>2. Scope — Manage LIT Module</h2>
+  <h3>In Scope</h3>
+  <ul>
+    <li>LIT plan change (upgrade, downgrade, swap) via Manage LIT journey</li>
+    <li>LIT cancellation with confirmation and success states</li>
+    <li>Channel and language selection during plan change</li>
+    <li>Plan summary, pricing (including proration), and payment</li>
+    <li>HOBS manage redirection API and MAPP callback integration</li>
+  </ul>
+  <h3>Out of Scope (this module)</h3>
+  <ul>
+    <li>LIT first-time purchase and nudge flows</li>
+    <li>Recharge + LIT add-on journey</li>
+    <li>Fiber plan change (LIT remains unmodified during fiber-only change)</li>
+    <li>Combined Fiber + LIT plan change in single transaction</li>
+  </ul>
+
+  <h2>3. Manage LIT User Flows</h2>
+  <div class="flow-diagram">HOME SCREEN
+  Quick Actions → "Manage live TV" [New]
+         │
+         ▼
+ACTION SELECTOR (Bottom Sheet)
+  "What would you like to do?"
+  ┌──────────────┐  ┌──────────────┐
+  │ Change plan  │  │ Cancel plan  │
+  └──────┬───────┘  └──────┬───────┘
+         │                  │
+         ▼                  ▼
+  CHANGE PLAN FLOW     CANCEL PLAN FLOW
+  (9 screens)          (4 screens)
+  Language → Channels → Plan → Summary → Pay
+                       Confirm → Success</div>
+
+  <h2>4. Screen Inventory — Manage LIT</h2>
+
+  <h3>Flow A: Change Plan</h3>
+  <table class="data">
+    <thead><tr><th>ID</th><th>Screen</th><th>Key Elements</th><th>CTA</th></tr></thead>
+    <tbody>
+      <tr><td>SCR-M01</td><td>Home — Quick Action</td><td>Current plan card, Quick Actions, Manage live TV with New badge</td><td>Tap Manage live TV</td></tr>
+      <tr><td>SCR-M02</td><td>Action Selector</td><td>Bottom sheet: Change plan / Cancel plan</td><td>Select Change plan</td></tr>
+      <tr><td>SCR-M03</td><td>Manage Plan Overview</td><td>Your Plan (price, channels, add-ons), My Channels, genre categories</td><td>Change Plan</td></tr>
+      <tr><td>SCR-M04</td><td>Language Selection</td><td>Multi-select language grid; live channel count + price footer</td><td>Proceed</td></tr>
+      <tr><td>SCR-M05</td><td>Your Channels</td><td>Search, language filter chips, genre categories with counts</td><td>Browse channels</td></tr>
+      <tr><td>SCR-M06</td><td>Plan Details</td><td>Recommended plan card, genre tags, channel icons</td><td>Confirm &amp; Proceed</td></tr>
+      <tr><td>SCR-M07</td><td>Summary (Collapsed)</td><td>Pack card, edit/remove icons, total price</td><td>Proceed to pay</td></tr>
+      <tr><td>SCR-M08</td><td>Summary (Expanded)</td><td>Full pack specs, OTT tags, pricing breakdown</td><td>Proceed to pay</td></tr>
+      <tr><td>SCR-M09</td><td>Payment</td><td>Final order summary</td><td>Complete payment</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Flow B: Cancel Plan</h3>
+  <table class="data">
+    <thead><tr><th>ID</th><th>Screen</th><th>Key Elements</th><th>CTA</th></tr></thead>
+    <tbody>
+      <tr><td>SCR-M02</td><td>Action Selector</td><td>Bottom sheet with Cancel plan option</td><td>Select Cancel plan</td></tr>
+      <tr><td>SCR-M10</td><td>Cancel Confirmation</td><td>Sad face icon, warning copy, content loss message</td><td>Yes, Cancel My Plan</td></tr>
+      <tr><td>SCR-M11</td><td>Cancel Success</td><td>Green checkmark, success message, dimmed background</td><td>Return to Home</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Functional Requirements — Manage LIT</h2>
+  <table class="data">
+    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>FR-M1</td><td>Display Manage live TV quick action on Home for Fiber + LIT subscribers</td><td>Must Have</td></tr>
+      <tr><td>FR-M2</td><td>Present action selector with Change plan and Cancel plan options</td><td>Must Have</td></tr>
+      <tr><td>FR-M3</td><td>Change plan invokes HOBS manage/getRedirectionUrl and redirects to LIT</td><td>Must Have</td></tr>
+      <tr><td>FR-M4</td><td>Receive LIT callback and place Add/Remove order (I &amp; O)</td><td>Must Have</td></tr>
+      <tr><td>FR-M5</td><td>Display prorated price + total price for LIT upgrade</td><td>Must Have</td></tr>
+      <tr><td>FR-M6</td><td>LIT downgrade processes instantly; FDO not applicable</td><td>Must Have</td></tr>
+      <tr><td>FR-M7</td><td>Cancel shows confirmation with content access loss warning</td><td>Must Have</td></tr>
+      <tr><td>FR-M8</td><td>On confirm cancel, submit Add/Remove order (O); suspend immediately</td><td>Must Have</td></tr>
+      <tr><td>FR-M9</td><td>Cancel success screen confirms plan cancellation</td><td>Must Have</td></tr>
+      <tr><td>FR-M10</td><td>Manage Plan shows current pack, channels, genres, My Channels link</td><td>Must Have</td></tr>
+      <tr><td>FR-M11</td><td>Channel search supports language and genre filtering</td><td>Must Have</td></tr>
+      <tr><td>FR-M12</td><td>Combined Fiber + LIT plan change NOT supported</td><td>Must Have</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. Business Rules</h2>
+  <table class="data">
+    <thead><tr><th>Rule</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>BR-M01</td><td>LIT validity aligns with Fiber plan validity</td></tr>
+      <tr><td>BR-M02</td><td>FDO not applicable for LIT plan changes</td></tr>
+      <tr><td>BR-M03</td><td>LIT downgrade processed instantly</td></tr>
+      <tr><td>BR-M04</td><td>LIT cancellation suspends entitlement immediately</td></tr>
+      <tr><td>BR-M05</td><td>Suspended accounts cannot access Manage LIT</td></tr>
+      <tr><td>BR-M06</td><td>Recharge-for-others: Continue only; no Manage/Remove</td></tr>
+      <tr><td>BR-M07</td><td>Prorated pricing for LIT upgrade</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. API Requirements</h2>
+  <table class="data">
+    <thead><tr><th>API</th><th>Endpoint</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>LIT Manage Redirection</td><td>GET /lit/manage/getRedirectionUrl</td><td>Manage/change plan URL</td></tr>
+      <tr><td>LIT Entitlement</td><td>GET /lit/getSubscriberEntitlement/{subscriberId}</td><td>Fetch entitlements</td></tr>
+      <tr><td>Pack to Channel</td><td>GET /lit/packtochannel/{packName}</td><td>Channel list for pack</td></tr>
+      <tr><td>Submit Order</td><td>POST submitOrder</td><td>LIT Add/Remove orders (I/O)</td></tr>
+      <tr><td>Subscriber Details</td><td>GET getSubscriberDetails</td><td>Return LIT Subscriber ID</td></tr>
+      <tr><td>LIT Callback</td><td>POST [TBD]/lit/callback</td><td>Receive LIT platform response</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Base URL (UAT):</strong> https://apiuathobs.tataplayfiber.co.in</p>
+
+  <h2>8. UI/UX Specifications</h2>
+  <table class="data">
+    <thead><tr><th>Component</th><th>Specification</th></tr></thead>
+    <tbody>
+      <tr><td>Color Theme</td><td>Dark theme; deep purple headers; magenta/pink primary CTAs</td></tr>
+      <tr><td>Bottom Sheet</td><td>Action selector, cancel confirmation; drag indicator</td></tr>
+      <tr><td>Sticky Footer</td><td>Price summary + primary CTA; chevron-up to expand</td></tr>
+      <tr><td>Filter Chips</td><td>Removable language tags; genre filter chips</td></tr>
+      <tr><td>Language Grid</td><td>3-column selectable language icon cards</td></tr>
+      <tr><td>Genre Accordion</td><td>Collapsible rows with channel counts</td></tr>
+      <tr><td>Plan Card</td><td>Label badge, channels, price, edit/remove icons</td></tr>
+    </tbody>
+  </table>
+
+  <h2>9. Scenario Matrix (Supporting Backend)</h2>
+  <div class="note">The following scenarios from the MAPP integration matrix support Manage LIT and related LIT journeys.</div>
+  <table class="data">
+    <thead><tr><th>#</th><th>Scenario</th><th>Manage LIT Relevance</th></tr></thead>
+    <tbody>
+      <tr><td>3</td><td>LIT Change Plan Only</td><td><strong>Primary Manage LIT flow</strong></td></tr>
+      <tr><td>6</td><td>LIT Drop / Cancellation</td><td><strong>Cancel Plan flow</strong></td></tr>
+      <tr><td>7</td><td>LIT Upgrade (Standalone)</td><td>Change Plan — upgrade path</td></tr>
+      <tr><td>8</td><td>LIT Swap (Standalone)</td><td>Change Plan — swap path</td></tr>
+      <tr><td>9</td><td>LIT Downgrade (Standalone)</td><td>Change Plan — downgrade path</td></tr>
+      <tr><td>10</td><td>LIT Cancellation (Standalone)</td><td>Cancel Plan flow</td></tr>
+      <tr><td>4</td><td>Fiber + LIT Combined Change</td><td>NOT SUPPORTED</td></tr>
+      <tr><td>11</td><td>Combined Upgrade/Downgrade</td><td>NOT ALLOWED</td></tr>
+      <tr><td>13</td><td>Suspended Account</td><td>NOT ALLOWED — no app login</td></tr>
+      <tr><td>14</td><td>LIT Package &amp; Channel Details</td><td>Manage Plan display</td></tr>
+      <tr><td>15</td><td>LIT Subscriber Details</td><td>Profile integration</td></tr>
+      <tr><td>19</td><td>Recharge for Others</td><td>Continue only; no Manage/Remove</td></tr>
+    </tbody>
+  </table>
+
+  <h2>10. Acceptance Criteria</h2>
+  <ul>
+    <li>UAT Scenario 3: LIT Change Plan via Manage LIT passes end-to-end</li>
+    <li>UAT Scenarios 6/10: LIT cancellation with immediate suspension passes</li>
+    <li>UAT Scenarios 7–9: Upgrade/Downgrade/Swap with correct pricing passes</li>
+    <li>Manage LIT UI matches FigJam design (Change Plan + Cancel Plan flows)</li>
+    <li>All HOBS wrapper APIs return expected responses</li>
+  </ul>
+
+  <h2>11. Open Questions</h2>
+  <table class="data">
+    <thead><tr><th>#</th><th>Question</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Q1</td><td>Autopay: Will LIT price be included in automandate file?</td><td>Open</td></tr>
+      <tr><td>Q2</td><td>Online sales journey LIT integration</td><td>Pending DigiSales discussion</td></tr>
+      <tr><td>Q3</td><td>DigiSales Payment Link journey</td><td>Pending discussion</td></tr>
+      <tr><td>Q4</td><td>2-step verification (Portal) impact</td><td>Pending discussion</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Tata Play Fiber | LIT — Live Internet TV | Business Requirements Document v1.1 | September 17, 2026
+  </div>
+</div>
+</body>
+</html>
