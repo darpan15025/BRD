@@ -1,281 +1,3026 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIT - Live Internet TV | Business Requirements Document</title>
-  <style>
-    :root {
-      --primary: #6b21a8;
-      --accent: #db2777;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --bg: #ffffff;
-      --bg-alt: #f9fafb;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      color: var(--text);
-      line-height: 1.6;
-      background: var(--bg-alt);
-      padding: 2rem;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: var(--bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 3rem;
-    }
-    h1 { font-size: 2rem; color: var(--primary); margin-bottom: 0.25rem; }
-    h2 { font-size: 1.4rem; color: var(--primary); margin: 2rem 0 1rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.4rem; }
-    h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.75rem; }
-    h4 { font-size: 1rem; margin: 1rem 0 0.5rem; }
-    p { margin-bottom: 0.75rem; }
-    .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .meta-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
-    .meta-table td, .meta-table th { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
-    .meta-table th { background: var(--bg-alt); font-weight: 600; width: 180px; }
-    table.data { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
-    table.data th, table.data td { border: 1px solid var(--border); padding: 0.5rem 0.6rem; vertical-align: top; }
-    table.data th { background: #f3e8ff; color: var(--primary); font-weight: 600; }
-    table.data tr:nth-child(even) { background: var(--bg-alt); }
-    ul { margin: 0.5rem 0 1rem 1.5rem; }
-    li { margin-bottom: 0.3rem; }
-    .flow-diagram {
-      background: #1e1b4b;
-      color: #e0e7ff;
-      padding: 1.5rem;
-      border-radius: 8px;
-      font-family: "Courier New", monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      overflow-x: auto;
-      white-space: pre;
-      margin: 1rem 0;
-    }
-    .note {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      padding: 0.75rem 1rem;
-      margin: 1rem 0;
-      border-radius: 0 6px 6px 0;
-      font-size: 0.9rem;
-    }
-    .badge {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      font-size: 0.7rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-    a { color: var(--accent); }
-    .footer {
-      margin-top: 3rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-align: center;
-    }
-    @media print {
-      body { background: white; padding: 0; }
-      .container { box-shadow: none; padding: 1rem; }
-      h2 { page-break-after: avoid; }
-      table { page-break-inside: avoid; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIT - Live Internet TV | Business Requirements Document v1.2</title>
+<style>
+:root { --primary: #6b21a8; --accent: #db2777; --text: #1f2937; --muted: #6b7280; --border: #e5e7eb; --bg: #f9fafb; }
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg); margin: 0; padding: 2rem; }
+.container { max-width: 960px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,.08); padding: 3rem 3.5rem; }
+h1 { font-size: 2rem; color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: .5rem; }
+h2 { font-size: 1.35rem; color: var(--primary); margin-top: 2.5rem; border-bottom: 2px solid #e9d5ff; padding-bottom: .3rem; }
+h3 { font-size: 1.1rem; color: #374151; margin-top: 1.5rem; }
+h4 { font-size: 1rem; margin-top: 1rem; }
+p { margin: .75rem 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .85rem; }
+th, td { border: 1px solid var(--border); padding: .5rem .65rem; text-align: left; vertical-align: top; }
+th { background: #f3e8ff; color: var(--primary); font-weight: 600; }
+tr:nth-child(even) { background: #fafafa; }
+code { background: #f3f4f6; padding: .15rem .4rem; border-radius: 3px; font-size: .85em; }
+pre { background: #1e1b4b; color: #e0e7ff; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: .8rem; line-height: 1.5; }
+ul, ol { margin: .5rem 0 1rem 1.5rem; }
+li { margin-bottom: .3rem; }
+a { color: var(--accent); }
+blockquote { border-left: 4px solid #f59e0b; background: #fffbeb; padding: .75rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+.footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .8rem; color: var(--muted); text-align: center; }
+@media print { body { background: #fff; padding: 0; } .container { box-shadow: none; padding: 1rem; } h2 { page-break-after: avoid; } table { page-break-inside: avoid; } }
+</style>
 </head>
 <body>
 <div class="container">
-  <h1>Business Requirements Document (BRD)</h1>
-  <p class="subtitle">Tata Play Fiber Mobile Application (MAPP) — LIT (Live Internet TV) — Manage LIT Module</p>
+<h1 id="business-requirements-document-brd">Business Requirements Document (BRD)</h1>
+<h2 id="tata-play-fiber-mobile-application-mapp">Tata Play Fiber Mobile Application (MAPP)</h2>
+<h3 id="feature-lit-live-internet-tv-manage-lit-module">Feature: LIT — Live Internet TV (Manage LIT Module)</h3>
+<hr />
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Version</strong></td>
+<td>1.2</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>September 17, 2026</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Draft</td>
+</tr>
+<tr>
+<td><strong>Product</strong></td>
+<td>Tata Play Fiber (TPF) Mobile App</td>
+</tr>
+<tr>
+<td><strong>Feature Name</strong></td>
+<td>LIT (Live Internet TV) — Manage LIT Module</td>
+</tr>
+<tr>
+<td><strong>Design Reference</strong></td>
+<td><a href="https://www.figma.com/board/psByt5QSY6vvmuAOmExFz7/Login-Revamp?node-id=0-1">Login Revamp – FigJam (Manage LIT Section)</a></td>
+</tr>
+<tr>
+<td><strong>Design Scope</strong></td>
+<td>Manage LIT flows only (Change Plan + Cancel Plan)</td>
+</tr>
+<tr>
+<td><strong>Source Inputs</strong></td>
+<td>MAPP Scenario Matrix (LIT Integration), FigJam Design (Manage LIT section, node 168:3578)</td>
+</tr>
+<tr>
+<td><strong>Prepared For</strong></td>
+<td>Product, Engineering (MAPP/HOBS/LIT), QA, UAT, Design</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-background--problem-statement">Background &amp; Problem Statement</a></li>
+<li><a href="#3-business-objectives--success-metrics">Business Objectives &amp; Success Metrics</a></li>
+<li><a href="#4-scope">Scope</a></li>
+<li><a href="#5-stakeholders--raci">Stakeholders &amp; RACI</a></li>
+<li><a href="#6-definitions--acronyms">Definitions &amp; Acronyms</a></li>
+<li><a href="#7-user-personas--segments">User Personas &amp; Segments</a></li>
+<li><a href="#8-high-level-solution-overview">High-Level Solution Overview</a></li>
+<li><a href="#9-functional-requirements">Functional Requirements</a></li>
+<li><a href="#10-manage-lit--detailed-user-journeys">Manage LIT — Detailed User Journeys</a></li>
+<li><a href="#11-screen-level-specifications-manage-lit">Screen-Level Specifications (Manage LIT)</a></li>
+<li><a href="#12-business-rules--constraints">Business Rules &amp; Constraints</a></li>
+<li><a href="#13-pricing-billing--validity-logic">Pricing, Billing &amp; Validity Logic</a></li>
+<li><a href="#14-api--integration-requirements">API &amp; Integration Requirements</a></li>
+<li><a href="#15-data-fields--system-mapping">Data Fields &amp; System Mapping</a></li>
+<li><a href="#16-error-handling--edge-cases">Error Handling &amp; Edge Cases</a></li>
+<li><a href="#17-non-functional-requirements">Non-Functional Requirements</a></li>
+<li><a href="#18-assumptions--dependencies">Assumptions &amp; Dependencies</a></li>
+<li><a href="#19-open-questions--pending-decisions">Open Questions &amp; Pending Decisions</a></li>
+<li><a href="#20-out-of-scope">Out of Scope</a></li>
+<li><a href="#21-acceptance-criteria--test-scenarios">Acceptance Criteria &amp; Test Scenarios</a></li>
+<li><a href="#appendix-a--full-scenario-matrix">Appendix A — Full Scenario Matrix</a></li>
+<li><a href="#appendix-b--api-catalog">Appendix B — API Catalog</a></li>
+<li><a href="#appendix-c--ui-copy--messaging-reference">Appendix C — UI Copy &amp; Messaging Reference</a></li>
+</ol>
+<hr />
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>Tata Play Fiber (TPF) is launching <strong>LIT (Live Internet TV)</strong> — a value-added subscription service that delivers live television channels and bundled OTT content over the internet to existing fiber broadband customers. LIT is positioned as an add-on to the core fiber plan, with subscription validity aligned to the customer's fiber plan lifecycle.</p>
+<p>The <strong>Manage LIT module</strong> documented in this BRD enables existing <strong>Fiber + LIT subscribers</strong> to independently manage their Live Internet TV subscription within the Tata Play Fiber Mobile Application (MAPP). This includes viewing their current LIT plan details, changing their channel pack (upgrade, downgrade, or swap), browsing included channels by language and genre, reviewing pricing with proration, and cancelling their LIT subscription — all without contacting customer support.</p>
+<p>This document serves as the single source of truth for product, design, engineering, and QA teams. It combines:</p>
+<ul>
+<li><strong>Business rules</strong> from the MAPP LIT Integration Scenario Matrix (22 scenarios)</li>
+<li><strong>UI/UX specifications</strong> from the FigJam design board (Manage LIT section — Change Plan and Cancel Plan flows)</li>
+<li><strong>Technical integration requirements</strong> across MAPP, HOBS, and the LIT platform</li>
+</ul>
+<p>The Manage LIT experience is accessed from the MAPP Home screen via a new <strong>"Manage live TV"</strong> quick action tile, which presents subscribers with a choice to either change their existing LIT plan or cancel it entirely.</p>
+<hr />
+<h2 id="2-background-problem-statement">2. Background &amp; Problem Statement</h2>
+<h3 id="21-current-state">2.1 Current State</h3>
+<p>Today, Tata Play Fiber customers subscribe to internet-only plans through MAPP. Live TV and OTT content are not natively manageable within the fiber app. When LIT is introduced as an add-on, subscribers who purchase it need a self-service mechanism to:</p>
+<ul>
+<li>Understand what channels and content are included in their current LIT pack</li>
+<li>Modify their LIT plan (add/remove languages, change channel tiers, upgrade or downgrade)</li>
+<li>Cancel LIT without cancelling their core fiber connection</li>
+<li>See transparent pricing including network fees, prorated charges, and total payable amount</li>
+</ul>
+<h3 id="22-problem-statement">2.2 Problem Statement</h3>
+<p>Without a dedicated Manage LIT journey in MAPP, LIT plan changes and cancellations would require:</p>
+<ul>
+<li>Contact center intervention (increasing operational cost)</li>
+<li>Redirection to external portals (poor customer experience)</li>
+<li>Manual order processing in HOBS (error-prone, slow fulfillment)</li>
+</ul>
+<h3 id="23-proposed-solution">2.3 Proposed Solution</h3>
+<p>Integrate a <strong>Manage LIT module</strong> within MAPP that:</p>
+<ol>
+<li>Surfaces LIT management from the Home screen Quick Actions</li>
+<li>Presents a guided, multi-step plan change flow (language selection → channel browse → plan review → summary → payment)</li>
+<li>Provides a clear, empathetic cancellation flow with explicit content-loss warnings</li>
+<li>Orchestrates orders through HOBS using established Add/Remove order patterns</li>
+<li>Maintains billing alignment between Fiber and LIT subscriptions</li>
+</ol>
+<hr />
+<h2 id="3-business-objectives-success-metrics">3. Business Objectives &amp; Success Metrics</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objective</th>
+<th>Description</th>
+<th>Success Metric</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O1</td>
+<td>Self-service LIT management</td>
+<td>Enable subscribers to change or cancel LIT without agent assistance</td>
+<td>% of LIT changes completed via MAPP (vs. contact center)</td>
+<td>≥ 80% within 3 months of launch</td>
+</tr>
+<tr>
+<td>O2</td>
+<td>Billing alignment</td>
+<td>Ensure LIT validity and renewal dates stay synchronized with fiber plan</td>
+<td>Misaligned renewal incidents</td>
+<td>Zero tolerance</td>
+</tr>
+<tr>
+<td>O3</td>
+<td>Reduce support load</td>
+<td>Decrease LIT-related inbound calls and tickets</td>
+<td>LIT support ticket volume</td>
+<td>30% reduction vs. baseline</td>
+</tr>
+<tr>
+<td>O4</td>
+<td>Increase LIT engagement</td>
+<td>Make LIT discoverable and manageable to improve retention</td>
+<td>LIT churn rate after first 90 days</td>
+<td>≤ 15% monthly</td>
+</tr>
+<tr>
+<td>O5</td>
+<td>Transparent pricing</td>
+<td>Display itemized pricing (NCF, content cost, proration, discounts) before payment</td>
+<td>Payment dispute rate on LIT orders</td>
+<td>&lt; 2% of transactions</td>
+</tr>
+<tr>
+<td>O6</td>
+<td>Profile consistency</td>
+<td>Keep subscriber identity synchronized across Fiber and LIT systems</td>
+<td>Profile sync failure rate</td>
+<td>&lt; 0.5%</td>
+</tr>
+<tr>
+<td>O7</td>
+<td>Fast fulfillment</td>
+<td>Complete LIT plan changes and cancellations in real time</td>
+<td>Order fulfillment time (P95)</td>
+<td>&lt; 10 seconds post-payment</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-scope">4. Scope</h2>
+<h3 id="41-in-scope-manage-lit-module-primary-focus">4.1 In Scope — Manage LIT Module (Primary Focus)</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Entry Point</strong></td>
+<td>"Manage live TV" quick action on MAPP Home screen with "New" badge</td>
+</tr>
+<tr>
+<td><strong>Action Selection</strong></td>
+<td>Bottom sheet offering "Change plan" and "Cancel plan" options</td>
+</tr>
+<tr>
+<td><strong>Change Plan Flow</strong></td>
+<td>Full journey: Manage Plan overview → Language selection → Channel browse → Plan review → Summary → Payment</td>
+</tr>
+<tr>
+<td><strong>Cancel Plan Flow</strong></td>
+<td>Confirmation bottom sheet → Success state with entitlement suspension</td>
+</tr>
+<tr>
+<td><strong>Plan Display</strong></td>
+<td>Current LIT pack details: channel count, price, duration, genres, OTT apps, add-ons</td>
+</tr>
+<tr>
+<td><strong>Channel Discovery</strong></td>
+<td>Search, language filters, genre categories, channel logo grid</td>
+</tr>
+<tr>
+<td><strong>Pricing Display</strong></td>
+<td>Monthly price, NCF breakdown, prorated amount, total payable, duration multiplier</td>
+</tr>
+<tr>
+<td><strong>Order Placement</strong></td>
+<td>HOBS Add/Remove orders (action <code>I</code> for add/change, action <code>O</code> for remove/cancel)</td>
+</tr>
+<tr>
+<td><strong>LIT Redirection</strong></td>
+<td>HOBS <code>manage/getRedirectionUrl</code> API for LIT platform handoff</td>
+</tr>
+<tr>
+<td><strong>Callback Handling</strong></td>
+<td>MAPP receives LIT selection data and triggers order submission</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-in-scope-supporting-backend-scenarios">4.2 In Scope — Supporting Backend Scenarios</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LIT first-time purchase (standalone, recharge + LIT, change plan + LIT)</td>
+<td>Documented in scenario matrix; separate design flows</td>
+</tr>
+<tr>
+<td>Fiber plan change with existing LIT</td>
+<td>LIT remains active; validity re-aligned</td>
+</tr>
+<tr>
+<td>Combined Fiber + LIT renewal pricing</td>
+<td><code>getEndUserDetails</code> returns bundled price</td>
+</tr>
+<tr>
+<td>LIT subscriber ID in profile</td>
+<td><code>getSubscriberDetails</code> modification</td>
+</tr>
+<tr>
+<td>RMN/email sync to LIT</td>
+<td>Profile update propagation</td>
+</tr>
+<tr>
+<td>Manage Services hub</td>
+<td>Service promotion for non-subscribers</td>
+</tr>
+<tr>
+<td>Paused/resumed fiber with LIT continuation</td>
+<td>Prorated pricing scenario</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-out-of-scope">4.3 Out of Scope</h3>
+<p>See <a href="#20-out-of-scope">Section 20 — Out of Scope</a>.</p>
+<hr />
+<h2 id="5-stakeholders-raci">5. Stakeholders &amp; RACI</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Name / Team</th>
+<th>Responsibility</th>
+<th>R</th>
+<th>A</th>
+<th>C</th>
+<th>I</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product Owner</td>
+<td>TPF Product</td>
+<td>Feature prioritization, acceptance sign-off</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>MAPP Frontend</td>
+<td>Mobile App Team</td>
+<td>UI implementation, navigation, state management</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>MAPP Backend</td>
+<td>Mobile API Team</td>
+<td>Callback API, HOBS integration, order submission</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>HOBS Team</td>
+<td>Backend Platform</td>
+<td>Wrapper APIs, order fulfillment, entitlement sync</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>LIT Platform</td>
+<td>LIT Team</td>
+<td>Redirection URLs, pricing/proration, callback payload</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Design</td>
+<td>UX/UI Team</td>
+<td>FigJam/Figma specs, design QA</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>QA</td>
+<td>Quality Assurance</td>
+<td>Test plan, UAT coordination, regression</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>DigiSales</td>
+<td>Sales Platform</td>
+<td>Online sales, payment link journeys (TBD)</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>Finance/Billing</td>
+<td>Automandate, invoicing, NCF rules</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>UAT Business</td>
+<td>Business Users</td>
+<td>Scenario validation, sign-off</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p><em>R = Responsible, A = Accountable, C = Consulted, I = Informed</em></p>
+<hr />
+<h2 id="6-definitions-acronyms">6. Definitions &amp; Acronyms</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MAPP</strong></td>
+<td>Tata Play Fiber Mobile Application — the customer-facing iOS and Android app</td>
+</tr>
+<tr>
+<td><strong>LIT</strong></td>
+<td>Live Internet TV — an add-on OTT/live TV subscription service bundled with fiber</td>
+</tr>
+<tr>
+<td><strong>HOBS</strong></td>
+<td>Home Order &amp; Billing System — central order orchestration and billing platform</td>
+</tr>
+<tr>
+<td><strong>TPF</strong></td>
+<td>Tata Play Fiber — the core fiber broadband service</td>
+</tr>
+<tr>
+<td><strong>RMN</strong></td>
+<td>Registered Mobile Number — primary contact number on the subscriber account</td>
+</tr>
+<tr>
+<td><strong>NCF</strong></td>
+<td>Network Capacity Fee — regulatory/network charge component of TV pricing (e.g., Rs 153)</td>
+</tr>
+<tr>
+<td><strong>FDO</strong></td>
+<td>Fiber Date of Operation — rules governing when a fiber plan change takes effect; <strong>not applicable to LIT</strong></td>
+</tr>
+<tr>
+<td><strong>Add/Remove Order</strong></td>
+<td>HOBS order type where action <code>I</code> = Insert (add/activate) and <code>O</code> = Remove (deactivate/cancel)</td>
+</tr>
+<tr>
+<td><strong>Change Package Order</strong></td>
+<td>HOBS order for modifying the core fiber broadband plan</td>
+</tr>
+<tr>
+<td><strong>Prorated Price</strong></td>
+<td>Partial charge or credit calculated based on remaining days in the current billing cycle</td>
+</tr>
+<tr>
+<td><strong>Modify Plan</strong></td>
+<td>HOBS/LIT backend process to change an active LIT subscription to a different pack</td>
+</tr>
+<tr>
+<td><strong>Entitlement</strong></td>
+<td>The set of channels, OTT apps, and features a subscriber is authorized to access</td>
+</tr>
+<tr>
+<td><strong>Redirection URL</strong></td>
+<td>A secure, time-bound URL generated by HOBS that redirects the customer to the LIT platform</td>
+</tr>
+<tr>
+<td><strong>Callback</strong></td>
+<td>Data payload returned from LIT platform to MAPP after the customer completes selection on LIT</td>
+</tr>
+<tr>
+<td><strong>Autopay / Automandate</strong></td>
+<td>Recurring payment mandate registered for automatic fiber renewal</td>
+</tr>
+<tr>
+<td><strong>BAU</strong></td>
+<td>Business As Usual — existing flow remains unchanged</td>
+</tr>
+<tr>
+<td><strong>Quick Action</strong></td>
+<td>A tappable tile on the MAPP Home screen providing shortcut access to a feature</td>
+</tr>
+<tr>
+<td><strong>Bottom Sheet</strong></td>
+<td>A modal panel that slides up from the bottom of the screen for secondary actions</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-user-personas-segments">7. User Personas &amp; Segments</h2>
+<h3 id="71-primary-persona-active-lit-subscriber-manage-lit-target-user">7.1 Primary Persona: Active LIT Subscriber (Manage LIT Target User)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Rajesh — The Connected Family Man</td>
+</tr>
+<tr>
+<td><strong>Segment</strong></td>
+<td>S2: Fiber + LIT</td>
+</tr>
+<tr>
+<td><strong>Profile</strong></td>
+<td>35-year-old, suburban household, 200 Mbps fiber plan with LIT add-on</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Customize TV channels to match family's language preferences (Hindi + English); occasionally upgrade for sports events</td>
+</tr>
+<tr>
+<td><strong>Pain Points</strong></td>
+<td>Cannot see which channels are included; unsure of pricing when changing plans; fears cancelling LIT will affect fiber</td>
+</tr>
+<tr>
+<td><strong>Manage LIT Need</strong></td>
+<td>View current pack, browse channels, change languages, see price before paying, cancel LIT independently</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-secondary-persona-price-conscious-downgrader">7.2 Secondary Persona: Price-Conscious Downgrader</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Priya — The Budget Optimizer</td>
+</tr>
+<tr>
+<td><strong>Segment</strong></td>
+<td>S2: Fiber + LIT</td>
+</tr>
+<tr>
+<td><strong>Profile</strong></td>
+<td>Wants to reduce monthly spend by downgrading LIT pack</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Switch to a smaller channel pack with fewer languages</td>
+</tr>
+<tr>
+<td><strong>Manage LIT Need</strong></td>
+<td>Downgrade flow with instant effect (no FDO), clear new price display</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-customer-segments-manage-lit-eligibility">7.3 Customer Segments &amp; Manage LIT Eligibility</h3>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Description</th>
+<th>Manage LIT Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S1: Fiber Only</strong></td>
+<td>Active fiber, no LIT</td>
+<td>❌ Not eligible — sees purchase/promotion instead</td>
+</tr>
+<tr>
+<td><strong>S2: Fiber + LIT</strong></td>
+<td>Active fiber with active LIT</td>
+<td>✅ Full access — Change plan + Cancel plan</td>
+</tr>
+<tr>
+<td><strong>S3: Fiber Autopay</strong></td>
+<td>Fiber on autopay mandate + LIT</td>
+<td>✅ Full access — autopay impact TBD for LIT changes</td>
+</tr>
+<tr>
+<td><strong>S4: Paused Fiber (Resumed)</strong></td>
+<td>Fiber was paused, now resumed, LIT active</td>
+<td>✅ Access with prorated pricing</td>
+</tr>
+<tr>
+<td><strong>S5: Suspended</strong></td>
+<td>Account suspended, app login blocked</td>
+<td>❌ Not eligible — no app access</td>
+</tr>
+<tr>
+<td><strong>S6: Recharge for Others</strong></td>
+<td>Third party recharging another account</td>
+<td>⚠️ Limited — Continue only; no Manage/Remove</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-high-level-solution-overview">8. High-Level Solution Overview</h2>
+<h3 id="81-system-architecture">8.1 System Architecture</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────┐
+│                        TATA PLAY FIBER (MAPP)                            │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│  │ Home Screen │→ │ Manage LIT   │→ │ Plan Change │→ │  Summary &amp;  │ │
+│  │ Quick Action│  │ Action Sheet │  │   Screens   │  │   Payment   │ │
+│  └─────────────┘  └──────────────┘  └─────────────┘  └──────┬──────┘ │
+└───────────────────────────────────────────────────────────────┼────────┘
+                                                                │
+                    ┌───────────────────────────────────────────┤
+                    │                                           │
+                    ▼                                           ▼
+         ┌─────────────────┐                       ┌─────────────────┐
+         │      HOBS       │                       │  LIT Platform   │
+         │  (Orchestration)│◄─────────────────────►│  (Subscription) │
+         │                 │   Wrapper APIs        │                 │
+         │ • getRedirection│                       │ • Plan catalog  │
+         │ • submitOrder   │                       │ • Pricing/NCF   │
+         │ • Entitlements  │                       │ • Proration     │
+         │ • Profile sync  │                       │ • Callback      │
+         └─────────────────┘                       └─────────────────┘
+</code></pre>
+<h3 id="82-manage-lit-integration-pattern">8.2 Manage LIT Integration Pattern</h3>
+<p><strong>Change Plan Flow:</strong>
+1. Customer taps "Manage live TV" on Home → MAPP shows action selector
+2. Customer selects "Change plan" → MAPP calls <code>GET /lit/manage/getRedirectionUrl</code>
+3. HOBS returns secure redirection URL → MAPP opens LIT platform (in-app webview or native)
+4. Customer selects languages, browses channels, reviews plan on LIT/MAPP screens
+5. LIT returns selection via callback → MAPP receives pack details, pricing, proration
+6. Customer reviews Summary screen → taps "Proceed to pay"
+7. MAPP calls <code>submitOrder</code> with Add/Remove actions (<code>I</code> for new pack, <code>O</code> for old pack)
+8. HOBS fulfills order → LIT Modify Plan processed → entitlement updated
+9. MAPP shows confirmation → updated plan reflected on Manage Plan overview</p>
+<p><strong>Cancel Plan Flow:</strong>
+1. Customer taps "Manage live TV" → selects "Cancel plan"
+2. MAPP shows cancellation confirmation bottom sheet with content-loss warning
+3. Customer taps "Yes, Cancel My Plan"
+4. MAPP calls <code>submitOrder</code> with Add/Remove action <code>O</code>
+5. HOBS unsubscribes LIT → suspends entitlement immediately
+6. MAPP shows success screen → LIT no longer visible as active service</p>
+<hr />
+<h2 id="9-functional-requirements">9. Functional Requirements</h2>
+<h3 id="91-manage-lit-core-requirements">9.1 Manage LIT — Core Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-M1</td>
+<td>Quick action visibility</td>
+<td>MAPP shall display "Manage live TV" quick action tile on the Home screen for subscribers with an active Fiber + LIT subscription. The tile shall include a "New" badge to drive discovery.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M2</td>
+<td>Action selector</td>
+<td>Upon tapping Manage live TV, MAPP shall present a bottom sheet with heading "What would you like to do?" and two options: "Change plan" and "Cancel plan".</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M3</td>
+<td>Manage plan overview</td>
+<td>The Manage Plan screen shall display the subscriber's current LIT pack including: monthly price, total TV channel count, add-on count (e.g., Extra box), active language selections with channel logos, and a "My Channels" deep-link.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M4</td>
+<td>Genre category display</td>
+<td>Manage Plan shall show collapsible genre categories (Movies, Sports, News, Kids, Spiritual, TV Shows) with channel counts per category. Tapping a category shall expand to show included channels.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M5</td>
+<td>Language selection</td>
+<td>Change plan flow shall present a multi-select language grid (English, Hindi, Marathi, Telugu, Tamil, Kannada, Malayalam, Bengali, and others). Selection shall dynamically update the channel count and price in the sticky footer.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M6</td>
+<td>Channel browse &amp; search</td>
+<td>Subscribers shall be able to search channels within the selected pack using a search bar ("Search channels in this pack"). Active language filters shall appear as removable chips.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M7</td>
+<td>Plan recommendation</td>
+<td>After language/channel selection, MAPP shall display a plan recommendation card: "Here's a plan based on your selection" with channel count, monthly price, genre tags, and sample channel logos.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M8</td>
+<td>Summary &amp; pricing</td>
+<td>The Summary screen shall show the selected LIT pack with: label badge, channel count (e.g., 538 TV Channels), total price (e.g., ₹2382), duration breakdown (e.g., ₹397 × 6 Months), edit (pencil) and remove (trash) icons.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M9</td>
+<td>Expandable summary</td>
+<td>Tapping the chevron-up icon on the sticky footer shall expand the summary card to show detailed specs: screen/device count, language details, OTT/genre tags, and full pricing breakdown.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M10</td>
+<td>Payment initiation</td>
+<td>"Proceed to pay" CTA shall initiate the standard MAPP payment flow with the calculated total (including prorated charges for upgrades).</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M11</td>
+<td>LIT redirection</td>
+<td>For plan changes requiring LIT platform interaction, MAPP shall call HOBS <code>manage/getRedirectionUrl</code> and handle the secure handoff with a loading indicator.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M12</td>
+<td>Order placement</td>
+<td>Post-selection, MAPP shall submit Add/Remove order via <code>submitOrder</code>: action <code>I</code> for new/updated LIT pack, action <code>O</code> for removed/cancelled pack. Both actions may be submitted in a single order for swap/change scenarios.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M13</td>
+<td>Proration display</td>
+<td>For LIT upgrades, the Summary screen shall display both prorated price (for remaining cycle) and total price before payment confirmation.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M14</td>
+<td>Instant downgrade</td>
+<td>LIT downgrades shall be processed instantly upon order fulfillment. No FDO or future-dated change is permitted.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M15</td>
+<td>Cancel confirmation</td>
+<td>Cancel plan shall display a bottom sheet with sad face icon, heading "We're sad to see you go!", and explicit warning: "Your plan will be cancelled and you will no longer have access to your content."</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M16</td>
+<td>Cancel actions</td>
+<td>Cancel bottom sheet shall offer two buttons: primary "Yes, Cancel My Plan" (triggers order) and secondary "I Don't Want to Cancel" (dismisses sheet).</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M17</td>
+<td>Cancel fulfillment</td>
+<td>On confirmed cancellation, MAPP shall submit Add/Remove order with action <code>O</code>. HOBS shall unsubscribe LIT and suspend entitlement immediately.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M18</td>
+<td>Cancel success</td>
+<td>After successful cancellation, MAPP shall display a success overlay with green checkmark and message "Plan cancelled successfully!" over a dimmed home screen.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-M19</td>
+<td>Edit from summary</td>
+<td>Tapping the pencil (edit) icon on the Summary screen shall navigate the customer back to plan/language selection to modify their choice.</td>
+<td>Should Have</td>
+</tr>
+<tr>
+<td>FR-M20</td>
+<td>Remove from summary</td>
+<td>Tapping the trash (remove) icon on the Summary screen shall trigger the Cancel Plan confirmation flow.</td>
+<td>Should Have</td>
+</tr>
+<tr>
+<td>FR-M21</td>
+<td>Discovery prompt</td>
+<td>Manage Plan overview shall show "Discover a best fit" prompt with utility icon to encourage plan exploration.</td>
+<td>Should Have</td>
+</tr>
+<tr>
+<td>FR-M22</td>
+<td>No combined transaction</td>
+<td>Combined Fiber plan change + LIT plan change in a single transaction shall NOT be supported. MAPP shall enforce separate journeys.</td>
+<td>Must Have</td>
+</tr>
+</tbody>
+</table>
+<h3 id="92-supporting-functional-requirements-backend-scenarios">9.2 Supporting Functional Requirements (Backend Scenarios)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-1.1</td>
+<td>LIT purchase display</td>
+<td>MAPP shall display LIT as an available add-on during recharge, plan change, and standalone purchase journeys for Fiber-only customers.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-1.2</td>
+<td>Expiry date handoff</td>
+<td>For standalone LIT purchase, MAPP shall send the current fiber plan expiry date to LIT for validity alignment.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-2.1</td>
+<td>Fiber-only plan change</td>
+<td>During fiber-only plan change, LIT products shall NOT be modifiable. Existing LIT remains active with validity re-aligned to new fiber plan.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-4.1</td>
+<td>Combined renewal price</td>
+<td>For same-plan renewal, <code>getEndUserDetails</code> shall return combined Fiber + LIT renewal price.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-7.1</td>
+<td>Package details API</td>
+<td>HOBS wrapper API shall provide LIT package and channel details for MAPP display.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-7.2</td>
+<td>LIT subscriber ID</td>
+<td><code>getSubscriberDetails</code> shall return LIT Subscriber ID.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-7.3</td>
+<td>Profile sync</td>
+<td>On RMN/email update, HOBS shall propagate changes to LIT via Update Subscriber Profile API.</td>
+<td>Must Have</td>
+</tr>
+<tr>
+<td>FR-9.1</td>
+<td>Recharge for others</td>
+<td>If target subscriber has LIT, recharger shall see Continue only — no Manage or Remove.</td>
+<td>Must Have</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-manage-lit-detailed-user-journeys">10. Manage LIT — Detailed User Journeys</h2>
+<h3 id="101-journey-a-change-lit-plan-happy-path">10.1 Journey A: Change LIT Plan (Happy Path)</h3>
+<p><strong>Actor:</strong> Rajesh (Fiber + LIT subscriber)<br />
+<strong>Precondition:</strong> Active fiber plan (200 Mbps), active LIT pack (130 channels, ₹399/month), app logged in<br />
+<strong>Goal:</strong> Add Tamil language channels to existing Hindi + English pack  </p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Screen</th>
+<th>User Action</th>
+<th>System Behavior</th>
+<th>API / Backend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Home (SCR-M01)</td>
+<td>Taps "Manage live TV" quick action (with "New" badge)</td>
+<td>Navigate to action selector; fetch current LIT entitlement</td>
+<td><code>GET /lit/getSubscriberEntitlement/{id}</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Action Selector (SCR-M02)</td>
+<td>Taps "Change plan"</td>
+<td>Navigate to Manage Plan overview; load current pack details</td>
+<td><code>GET /lit/packtochannel/{packName}</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Manage Plan (SCR-M03)</td>
+<td>Reviews current plan: 130 channels, ₹399/month, Hindi + English logos</td>
+<td>Display plan card, genre categories, "Discover a best fit"</td>
+<td>Entitlement data rendered</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Manage Plan (SCR-M03)</td>
+<td>Taps "Change Plan" CTA in sticky footer</td>
+<td>Navigate to Language Selection screen</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Language Selection (SCR-M04)</td>
+<td>Selects Tamil in addition to Hindi and English</td>
+<td>Footer updates: "534 Channels | ₹429/month (Includes Rs 153 network fee)"</td>
+<td>LIT pricing API (real-time calc)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Language Selection (SCR-M04)</td>
+<td>Taps "Proceed"</td>
+<td>Navigate to Your Channels browse screen</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Your Channels (SCR-M05)</td>
+<td>Searches "Star Sports", filters by Sports genre</td>
+<td>Display matching channels; show count per genre</td>
+<td>Channel search/filter (local + API)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Plan Details (SCR-M06)</td>
+<td>Reviews recommended plan: "534 TV Channels at ₹376/month"</td>
+<td>Show plan card with genre tags, channel icons, promo banner</td>
+<td>LIT plan recommendation</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Plan Details (SCR-M06)</td>
+<td>Taps "Confirm &amp; Proceed"</td>
+<td>Navigate to Summary screen (collapsed view)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Summary (SCR-M07)</td>
+<td>Reviews: 534 TV Channels, ₹2544 total, ₹424 × 6 Months</td>
+<td>Display pack card with edit/remove icons; sticky footer shows ₹2544 + "Proceed to pay"</td>
+<td>Pricing breakdown from LIT</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Summary (SCR-M07)</td>
+<td>Taps chevron-up to expand</td>
+<td>Show specs: device count, languages, OTT tags, NCF breakdown</td>
+<td>—</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Summary (SCR-M07)</td>
+<td>Taps "Proceed to pay"</td>
+<td>Initiate MAPP payment flow</td>
+<td>Payment gateway</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Payment</td>
+<td>Completes payment</td>
+<td>MAPP submits order: Add/Remove (O for old pack, I for new pack)</td>
+<td><code>POST submitOrder</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Confirmation</td>
+<td>—</td>
+<td>HOBS fulfills → LIT Modify Plan → entitlement updated</td>
+<td>HOBS → LIT backend</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Manage Plan (SCR-M03)</td>
+<td>Sees updated plan with Tamil channels</td>
+<td>Display success state; updated channel count and logos</td>
+<td>Refresh entitlement</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Postcondition:</strong> LIT pack updated to 534 channels including Tamil. Fiber plan unchanged. New validity aligned.</p>
+<hr />
+<h3 id="102-journey-b-cancel-lit-plan-happy-path">10.2 Journey B: Cancel LIT Plan (Happy Path)</h3>
+<p><strong>Actor:</strong> Priya (Fiber + LIT subscriber)<br />
+<strong>Precondition:</strong> Active fiber + LIT, wants to cancel LIT to save money<br />
+<strong>Goal:</strong> Cancel LIT subscription while keeping fiber active  </p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Screen</th>
+<th>User Action</th>
+<th>System Behavior</th>
+<th>API / Backend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Home (SCR-M01)</td>
+<td>Taps "Manage live TV"</td>
+<td>Show action selector</td>
+<td>Fetch entitlement</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Action Selector (SCR-M02)</td>
+<td>Taps "Cancel plan"</td>
+<td>Show cancellation bottom sheet over dimmed home screen</td>
+<td>—</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Cancel Confirmation (SCR-M10)</td>
+<td>Reads warning about content access loss</td>
+<td>Display sad face icon, warning copy, two CTAs</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cancel Confirmation (SCR-M10)</td>
+<td>Taps "Yes, Cancel My Plan"</td>
+<td>Submit cancellation order</td>
+<td><code>POST submitOrder</code> (action O)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Backend</td>
+<td>—</td>
+<td>HOBS unsubscribes LIT → suspends entitlement immediately</td>
+<td>HOBS → LIT unsubscribe</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Cancel Success (SCR-M11)</td>
+<td>Sees "Plan cancelled successfully!" with green checkmark</td>
+<td>Show success overlay; dimmed home background</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Home (SCR-M01)</td>
+<td>Returns to home</td>
+<td>"Manage live TV" tile removed or changed to "Explore LIT" promotion</td>
+<td>UI state refresh</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Postcondition:</strong> LIT subscription cancelled. Fiber plan remains active. LIT entitlement suspended immediately.</p>
+<hr />
+<h3 id="103-journey-c-lit-upgrade-with-proration">10.3 Journey C: LIT Upgrade with Proration</h3>
+<p><strong>Actor:</strong> Rajesh<br />
+<strong>Precondition:</strong> Mid-cycle on 6-month LIT pack, wants to upgrade to premium pack<br />
+<strong>Goal:</strong> Upgrade LIT pack and pay only the prorated difference  </p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>User Action</th>
+<th>System Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Initiates Change plan from Manage LIT</td>
+<td>Load current pack with remaining validity info</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Selects premium pack with more channels</td>
+<td>LIT returns prorated price (e.g., ₹180 for remaining 4 months) + total new pack price</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Reviews Summary with proration line item</td>
+<td>Display: "Prorated upgrade charge: ₹180" + "New plan total: ₹2,982"</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Proceeds to pay</td>
+<td>Charge prorated + any applicable taxes</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Order fulfilled</td>
+<td>HOBS processes LIT Modify Plan; new entitlement active immediately</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="104-journey-d-cancel-abandonment">10.4 Journey D: Cancel Abandonment</h3>
+<p><strong>Actor:</strong> Rajesh<br />
+<strong>Precondition:</strong> Initiated cancel flow but changed mind  </p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>User Action</th>
+<th>System Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Taps "Cancel plan" from action selector</td>
+<td>Show cancellation bottom sheet</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Taps "I Don't Want to Cancel"</td>
+<td>Dismiss bottom sheet; return to home screen</td>
+</tr>
+<tr>
+<td>3</td>
+<td>—</td>
+<td>No order submitted; LIT remains active; no state change</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-screen-level-specifications-manage-lit">11. Screen-Level Specifications (Manage LIT)</h2>
+<h3 id="scr-m01-home-screen-quick-action-entry">SCR-M01: Home Screen — Quick Action Entry</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Primary entry point for Manage LIT; surfaces the feature alongside other Quick Actions</td>
+</tr>
+<tr>
+<td><strong>Access Condition</strong></td>
+<td>Subscriber has active Fiber + LIT subscription</td>
+</tr>
+<tr>
+<td><strong>Layout</strong></td>
+<td>Standard MAPP Home with CURRENT PLAN card (speed, recharge date), Quick Actions grid (2 rows × 4 columns), bottom navigation (Home, Plans, Support, Profile)</td>
+</tr>
+<tr>
+<td><strong>Key Elements</strong></td>
+<td>Greeting ("Good Morning {Name}!"), CURRENT PLAN card (200 MBPS, Unlimited Data, Next Recharge Date, Recharge + My Offers buttons), Quick Actions section, "Manage live TV" tile with TV/router icon and <strong>"New" badge</strong></td>
+</tr>
+<tr>
+<td><strong>Tile Label</strong></td>
+<td>"Manage live TV"</td>
+</tr>
+<tr>
+<td><strong>Badge</strong></td>
+<td>"New" — pink/magenta pill badge on top-right of tile</td>
+</tr>
+<tr>
+<td><strong>Tap Action</strong></td>
+<td>Navigate to Action Selector (SCR-M02)</td>
+</tr>
+<tr>
+<td><strong>Data Required</strong></td>
+<td>Subscriber ID, LIT entitlement status (active/inactive), current fiber plan summary</td>
+</tr>
+<tr>
+<td><strong>Error State</strong></td>
+<td>If entitlement fetch fails, show toast: "Unable to load your TV plan. Please try again."</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m02-action-selector-bottom-sheet">SCR-M02: Action Selector (Bottom Sheet)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Let the subscriber choose between changing or cancelling their LIT plan</td>
+</tr>
+<tr>
+<td><strong>Layout</strong></td>
+<td>Bottom sheet overlay (≈200px height) on dimmed Home screen; drag indicator at top</td>
+</tr>
+<tr>
+<td><strong>Heading</strong></td>
+<td>"What would you like to do?"</td>
+</tr>
+<tr>
+<td><strong>Subtext</strong></td>
+<td>"Manage your Live TV plan in just a few taps"</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>Two full-width buttons stacked vertically: <strong>"Change plan"</strong> (primary/outline) and <strong>"Cancel plan"</strong> (secondary/outline)</td>
+</tr>
+<tr>
+<td><strong>Dismiss</strong></td>
+<td>Tap outside sheet, swipe down, or back gesture → return to Home</td>
+</tr>
+<tr>
+<td><strong>Change plan action</strong></td>
+<td>Navigate to Manage Plan Overview (SCR-M03)</td>
+</tr>
+<tr>
+<td><strong>Cancel plan action</strong></td>
+<td>Show Cancel Confirmation bottom sheet (SCR-M10)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m03-manage-plan-overview">SCR-M03: Manage Plan Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Display the subscriber's current LIT plan with channel details and option to change</td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td>Back arrow + screen title (e.g., "Manage Plan" or "Your Plan")</td>
+</tr>
+<tr>
+<td><strong>Your Plan Card</strong></td>
+<td>Section header: "Your Plan" with "My Channels" link (top-right)</td>
+</tr>
+<tr>
+<td><strong>Plan Metrics</strong></td>
+<td>Left column: channel count (e.g., "130") with label "TV Channels"; channel logo row (up to 3 logos + "+N" overflow). Right column: add-on count (e.g., "1") with label "Extra box"; add-on icon row</td>
+</tr>
+<tr>
+<td><strong>Discovery Prompt</strong></td>
+<td>Light bulb icon + "Discover a best fit" text below plan card</td>
+</tr>
+<tr>
+<td><strong>Filter Chips</strong></td>
+<td>Horizontal scrollable chips for quick filtering (e.g., language-based)</td>
+</tr>
+<tr>
+<td><strong>Genre Categories</strong></td>
+<td>Collapsible accordion rows: Movies (25 Channels), Sports (15 Channels), News (12 Channels), Kids (15 Channels), Spiritual (11 Channels) — each with chevron-right and channel count</td>
+</tr>
+<tr>
+<td><strong>Expanded Genre</strong></td>
+<td>Shows horizontal channel chip cards (medium size) with channel logo, name, and HD/SD badge</td>
+</tr>
+<tr>
+<td><strong>Sticky Footer CTA</strong></td>
+<td>Full-width magenta button: <strong>"Change Plan"</strong></td>
+</tr>
+<tr>
+<td><strong>Data Source</strong></td>
+<td><code>GET /lit/getSubscriberEntitlement/{id}</code>, <code>GET /lit/packtochannel/{packName}</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m04-language-selection">SCR-M04: Language Selection</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Allow subscriber to select one or more languages to customize their channel pack</td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td>Back arrow + title</td>
+</tr>
+<tr>
+<td><strong>Instruction</strong></td>
+<td>"Select one or more languages &amp; get all channels of selected languages"</td>
+</tr>
+<tr>
+<td><strong>Language Grid</strong></td>
+<td>3-column grid of selectable cards: English, Hindi, Marathi, Telugu, Tamil, Kannada, Malayalam, Bengali, Gujarati, Punjabi, Odia, etc. Each card shows language name and icon/flag</td>
+</tr>
+<tr>
+<td><strong>Selection State</strong></td>
+<td>Selected languages show highlighted border/background; deselected show default state</td>
+</tr>
+<tr>
+<td><strong>Sticky Footer</strong></td>
+<td>Left: dynamic channel count + price (e.g., "531 Channels | ₹399/month (Includes Rs 153 network fee)"). Right: <strong>"Proceed"</strong> button</td>
+</tr>
+<tr>
+<td><strong>Real-time Update</strong></td>
+<td>Channel count and price recalculate on each language toggle</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>At least one language must be selected to proceed</td>
+</tr>
+<tr>
+<td><strong>Proceed Action</strong></td>
+<td>Navigate to Your Channels (SCR-M05) or Plan Details (SCR-M06)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m05-your-channels-browse-search">SCR-M05: Your Channels (Browse &amp; Search)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Let subscriber explore and search channels within their selected pack</td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td>Pack name (e.g., "538 TV Channels") with validity info</td>
+</tr>
+<tr>
+<td><strong>Search Bar</strong></td>
+<td>Placeholder: "Search channels in this pack" with search/filter icon on right</td>
+</tr>
+<tr>
+<td><strong>Filter Chips</strong></td>
+<td>Active language filters as removable chips (e.g., "English ×", "Hindi ×")</td>
+</tr>
+<tr>
+<td><strong>Genre List</strong></td>
+<td>Vertical list with channel counts: TV Shows (161), Sports (25), Movies (48), News (45), Spiritual (11), Kids (15)</td>
+</tr>
+<tr>
+<td><strong>Expand Behavior</strong></td>
+<td>Tap genre row → expand to show channel list within that genre</td>
+</tr>
+<tr>
+<td><strong>Channel Display</strong></td>
+<td>Channel logo, name, language tag, HD/SD indicator</td>
+</tr>
+<tr>
+<td><strong>Bottom Sheet (Channel Detail)</strong></td>
+<td>Tapping a genre may open a bottom sheet with full channel list, search, and pricing footer</td>
+</tr>
+<tr>
+<td><strong>Footer</strong></td>
+<td>Price display + "Proceed" / "Confirm &amp; Proceed" CTA</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m06-plan-details-review">SCR-M06: Plan Details (Review)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Present the recommended LIT plan based on customer's language/channel selection</td>
+</tr>
+<tr>
+<td><strong>Heading</strong></td>
+<td>"Here's a plan based on your selection"</td>
+</tr>
+<tr>
+<td><strong>Plan Card</strong></td>
+<td>Large card: "{N} TV Channels at ₹{price}/month" (e.g., "538 TV Channels at ₹346/month")</td>
+</tr>
+<tr>
+<td><strong>Subtext</strong></td>
+<td>"Includes {N} complementary channels" or similar value statement</td>
+</tr>
+<tr>
+<td><strong>Genre Tags</strong></td>
+<td>Horizontal tag row: Sports, News, TV Shows, Movies, Kids, etc.</td>
+</tr>
+<tr>
+<td><strong>Channel Grid</strong></td>
+<td>Sample channel logos (6–12 icons) representing included channels</td>
+</tr>
+<tr>
+<td><strong>Promo Banner</strong></td>
+<td>Sparkle icon + promotional text (e.g., savings or bundle offer)</td>
+</tr>
+<tr>
+<td><strong>Sticky Footer</strong></td>
+<td>Price (with discount if applicable) + <strong>"Confirm &amp; Proceed"</strong> CTA</td>
+</tr>
+<tr>
+<td><strong>CTA Action</strong></td>
+<td>Navigate to Summary (SCR-M07)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m07-scr-m08-summary-collapsed-expanded">SCR-M07 / SCR-M08: Summary (Collapsed &amp; Expanded)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Final review of selected LIT plan with pricing before payment</td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td>Back arrow + "Summary"</td>
+</tr>
+<tr>
+<td><strong>Pack Card (Collapsed)</strong></td>
+<td>Label badge (pack name), channel count ("538 TV Channels"), total price ("₹2382"), duration ("₹397 × 6 Months"), edit (pencil) icon top-right, remove (trash) icon top-right, chevron-right to expand</td>
+</tr>
+<tr>
+<td><strong>Pack Card (Expanded)</strong></td>
+<td>All collapsed content plus: specs list with monitor icon (device/screen count) and globe icon (language details), OTT/genre tag row, divider lines between sections</td>
+</tr>
+<tr>
+<td><strong>Sticky Footer</strong></td>
+<td>Left section: total price ("₹2382") with chevron-up toggle. Right section: <strong>"Proceed to pay"</strong> button (magenta)</td>
+</tr>
+<tr>
+<td><strong>Edit Action</strong></td>
+<td>Pencil icon → navigate back to language/plan selection</td>
+</tr>
+<tr>
+<td><strong>Remove Action</strong></td>
+<td>Trash icon → trigger Cancel Plan flow (SCR-M10)</td>
+</tr>
+<tr>
+<td><strong>Expand/Collapse</strong></td>
+<td>Chevron-up on footer toggles pack card between collapsed and expanded states</td>
+</tr>
+<tr>
+<td><strong>Pricing Breakdown (Expanded)</strong></td>
+<td>Base content price, NCF (network fee), discount (if any), taxes, prorated amount (for upgrades), grand total</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m09-payment">SCR-M09: Payment</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Standard MAPP payment flow for LIT plan change charge</td>
+</tr>
+<tr>
+<td><strong>Content</strong></td>
+<td>Reuses existing MAPP payment screen with LIT-specific line items</td>
+</tr>
+<tr>
+<td><strong>Line Items</strong></td>
+<td>LIT plan name, duration, base price, NCF, proration, taxes, total</td>
+</tr>
+<tr>
+<td><strong>Payment Methods</strong></td>
+<td>All standard MAPP payment options (UPI, cards, net banking, wallet)</td>
+</tr>
+<tr>
+<td><strong>On Success</strong></td>
+<td>Submit order → show confirmation → navigate to updated Manage Plan or Home</td>
+</tr>
+<tr>
+<td><strong>On Failure</strong></td>
+<td>Show error with retry option; do not submit order</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m10-cancel-confirmation-bottom-sheet">SCR-M10: Cancel Confirmation (Bottom Sheet)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Confirm subscriber's intent to cancel LIT with clear consequences</td>
+</tr>
+<tr>
+<td><strong>Layout</strong></td>
+<td>Bottom sheet (≈368px height) on dimmed Home screen; close (×) button at top</td>
+</tr>
+<tr>
+<td><strong>Icon</strong></td>
+<td>Sad face emoji/icon (centered)</td>
+</tr>
+<tr>
+<td><strong>Heading</strong></td>
+<td>"We're sad to see you go!"</td>
+</tr>
+<tr>
+<td><strong>Warning Text</strong></td>
+<td>"Your plan will be cancelled and you will no longer have access to your content. Are you sure you want to cancel?"</td>
+</tr>
+<tr>
+<td><strong>Primary CTA</strong></td>
+<td><strong>"Yes, Cancel My Plan"</strong> — magenta filled button; triggers order submission</td>
+</tr>
+<tr>
+<td><strong>Secondary CTA</strong></td>
+<td><strong>"I Don't Want to Cancel"</strong> — outline/text button; dismisses sheet</td>
+</tr>
+<tr>
+<td><strong>Close (×)</strong></td>
+<td>Same as secondary CTA — dismiss without action</td>
+</tr>
+<tr>
+<td><strong>On Confirm</strong></td>
+<td>Submit Add/Remove order (action <code>O</code>) → show success (SCR-M11)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scr-m11-cancel-success">SCR-M11: Cancel Success</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Confirm successful LIT cancellation to the subscriber</td>
+</tr>
+<tr>
+<td><strong>Layout</strong></td>
+<td>Centered overlay on dimmed Home screen</td>
+</tr>
+<tr>
+<td><strong>Icon</strong></td>
+<td>Green checkmark (in confirm/success circle)</td>
+</tr>
+<tr>
+<td><strong>Message</strong></td>
+<td>"Plan cancelled successfully!"</td>
+</tr>
+<tr>
+<td><strong>Duration</strong></td>
+<td>Auto-dismiss after 3 seconds OR tap to dismiss</td>
+</tr>
+<tr>
+<td><strong>Post-dismiss</strong></td>
+<td>Home screen refreshes; "Manage live TV" tile removed or replaced with LIT promotion</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-business-rules-constraints">12. Business Rules &amp; Constraints</h2>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Rationale</th>
+<th>Enforcement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR-01</td>
+<td>LIT validity shall align with fiber plan validity for bundled customers</td>
+<td>Prevents billing discrepancies and customer confusion</td>
+<td>HOBS validity sync on fiber renewal/change</td>
+</tr>
+<tr>
+<td>BR-02</td>
+<td>FDO is NOT applicable for LIT plan changes</td>
+<td>LIT changes are instant, not future-dated</td>
+<td>MAPP shall not show FDO date picker for LIT</td>
+</tr>
+<tr>
+<td>BR-03</td>
+<td>LIT downgrade is processed instantly</td>
+<td>Customer expects immediate effect when reducing pack</td>
+<td>HOBS instant fulfillment; no scheduled downgrade</td>
+</tr>
+<tr>
+<td>BR-04</td>
+<td>Combined Fiber + LIT plan change in single transaction is prohibited</td>
+<td>Technical limitation; separate order types</td>
+<td>MAPP blocks LIT redirection during fiber-only plan change</td>
+</tr>
+<tr>
+<td>BR-05</td>
+<td>Combined Fiber upgrade/downgrade + LIT upgrade/downgrade is prohibited</td>
+<td>Prevents complex proration and order conflicts</td>
+<td>MAPP enforces separate journeys</td>
+</tr>
+<tr>
+<td>BR-06</td>
+<td>LIT entitlement suspension is immediate upon cancellation</td>
+<td>Customer should not access content after cancelling</td>
+<td>HOBS unsubscribes and suspends on fulfillment</td>
+</tr>
+<tr>
+<td>BR-07</td>
+<td>Suspended accounts cannot access MAPP</td>
+<td>Security and billing integrity</td>
+<td>App login blocked; no Manage LIT access</td>
+</tr>
+<tr>
+<td>BR-08</td>
+<td>During fiber-only plan change, LIT products cannot be modified</td>
+<td>Avoids conflicting orders</td>
+<td>LIT options hidden/disabled in fiber change UI</td>
+</tr>
+<tr>
+<td>BR-09</td>
+<td>Recharge-for-others: LIT allows Continue only</td>
+<td>Third party should not manage another's LIT</td>
+<td>Manage and Remove actions hidden</td>
+</tr>
+<tr>
+<td>BR-10</td>
+<td>Prorated pricing applies for LIT upgrade and paused/resumed fiber</td>
+<td>Fair billing for mid-cycle changes</td>
+<td>LIT platform calculates; MAPP displays</td>
+</tr>
+<tr>
+<td>BR-11</td>
+<td>At least one language must be selected for plan change</td>
+<td>Empty pack is invalid</td>
+<td>Frontend validation before Proceed</td>
+</tr>
+<tr>
+<td>BR-12</td>
+<td>Cancel requires explicit confirmation</td>
+<td>Prevents accidental cancellation</td>
+<td>Two-step: select Cancel → confirm Yes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13-pricing-billing-validity-logic">13. Pricing, Billing &amp; Validity Logic</h2>
+<h3 id="131-price-components">13.1 Price Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Content Price</strong></td>
+<td>Charge for TV channels and OTT apps in the selected pack</td>
+<td>₹346/month</td>
+</tr>
+<tr>
+<td><strong>NCF (Network Capacity Fee)</strong></td>
+<td>Regulatory network charge included in total</td>
+<td>₹153/month</td>
+</tr>
+<tr>
+<td><strong>Total Monthly</strong></td>
+<td>Content + NCF</td>
+<td>₹399/month (₹246 content + ₹153 NCF)</td>
+</tr>
+<tr>
+<td><strong>Duration Multiplier</strong></td>
+<td>Pack duration (1, 3, 6, 12 months)</td>
+<td>₹397 × 6 Months = ₹2,382</td>
+</tr>
+<tr>
+<td><strong>Prorated Charge</strong></td>
+<td>Partial charge for upgrade mid-cycle</td>
+<td>₹180 for remaining 4 of 6 months</td>
+</tr>
+<tr>
+<td><strong>Discount</strong></td>
+<td>Promotional or bundle discount (if applicable)</td>
+<td>10% off → shown with strikethrough original price</td>
+</tr>
+</tbody>
+</table>
+<h3 id="132-proration-rules">13.2 Proration Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Proration Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LIT Upgrade (mid-cycle)</td>
+<td>Customer pays difference between old and new pack for remaining days</td>
+</tr>
+<tr>
+<td>LIT Downgrade (mid-cycle)</td>
+<td>Instant switch; credit/refund policy per business decision (typically no refund for downgrade)</td>
+</tr>
+<tr>
+<td>LIT Swap (same price tier)</td>
+<td>No proration; instant pack swap</td>
+</tr>
+<tr>
+<td>Paused &amp; Resumed Fiber</td>
+<td>LIT prorated based on fiber expiry date + total renewal amount</td>
+</tr>
+</tbody>
+</table>
+<h3 id="133-validity-alignment">13.3 Validity Alignment</h3>
+<ul>
+<li>LIT subscription end date = Fiber plan end date (for bundled customers)</li>
+<li>On fiber plan change: LIT validity is re-aligned to new fiber plan end date (LIT pack itself unchanged)</li>
+<li>On fiber renewal: LIT renews alongside fiber (combined price from <code>getEndUserDetails</code>)</li>
+<li>On LIT cancellation: LIT entitlement ends immediately; fiber validity unaffected</li>
+</ul>
+<hr />
+<h2 id="14-api-integration-requirements">14. API &amp; Integration Requirements</h2>
+<h3 id="141-hobs-lit-apis">14.1 HOBS LIT APIs</h3>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Request</th>
+<th>Response</th>
+<th>Used In</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manage Redirection</td>
+<td>GET/POST</td>
+<td><code>/lit/manage/getRedirectionUrl</code></td>
+<td><code>{ subscriberId, fiberExpiryDate }</code></td>
+<td><code>{ redirectionUrl, sessionToken, expiry }</code></td>
+<td>Change plan (LIT handoff)</td>
+</tr>
+<tr>
+<td>Subscribe Redirection</td>
+<td>GET/POST</td>
+<td><code>/lit/subscribe/getRedirectionUrl</code></td>
+<td><code>{ subscriberId, fiberExpiryDate }</code></td>
+<td><code>{ redirectionUrl }</code></td>
+<td>First-time purchase (out of Manage LIT scope)</td>
+</tr>
+<tr>
+<td>Subscriber Entitlement</td>
+<td>GET</td>
+<td><code>/lit/getSubscriberEntitlement/{subscriberId}</code></td>
+<td>Path param: subscriberId</td>
+<td><code>{ litSubscriberId, packName, channelCount, price, validity, languages[], addons[] }</code></td>
+<td>Manage Plan overview</td>
+</tr>
+<tr>
+<td>Pack to Channel</td>
+<td>GET</td>
+<td><code>/lit/packtochannel/{packName}</code></td>
+<td>Path param: packName</td>
+<td><code>{ channels[{ name, logo, language, genre, hd }], genres[{ name, count }] }</code></td>
+<td>Channel browse</td>
+</tr>
+<tr>
+<td>Subscriber Entitlements</td>
+<td>GET</td>
+<td><code>/SubscriberServices/subscriberEntitlements</code></td>
+<td><code>{ subscriberId }</code></td>
+<td>Combined fiber + LIT entitlements</td>
+<td>Profile, Manage Services</td>
+</tr>
+<tr>
+<td>Update Profile</td>
+<td>POST</td>
+<td><code>/lit/lit/updateSubscriberProfile</code></td>
+<td><code>{ litSubscriberId, rmn, email }</code></td>
+<td><code>{ status, message }</code></td>
+<td>Profile update sync</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Base URL (UAT):</strong> <code>https://apiuathobs.tataplayfiber.co.in</code></p>
+<h3 id="142-mapp-apis">14.2 MAPP APIs</h3>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Method</th>
+<th>Direction</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LIT Callback</td>
+<td>POST</td>
+<td>LIT → MAPP</td>
+<td>Receive plan selection, pricing, and proration data after LIT redirection</td>
+</tr>
+<tr>
+<td>Submit Order</td>
+<td>POST</td>
+<td>MAPP → HOBS</td>
+<td>Place Add/Remove orders for LIT changes and cancellations</td>
+</tr>
+<tr>
+<td>Get End User Details</td>
+<td>GET</td>
+<td>MAPP → HOBS</td>
+<td>Fetch combined Fiber + LIT renewal pricing</td>
+</tr>
+<tr>
+<td>Get Subscriber Details</td>
+<td>GET</td>
+<td>MAPP → HOBS</td>
+<td>Fetch subscriber profile including LIT Subscriber ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="143-api-sequence-manage-lit-change-plan">14.3 API Sequence — Manage LIT Change Plan</h3>
+<pre><code>Customer          MAPP              HOBS              LIT Platform
+   │                │                  │                    │
+   │──Tap Manage───►│                  │                    │
+   │                │──GET entitlement─►│                    │
+   │                │◄──pack details────│                    │
+   │◄─Show Plan────│                  │                    │
+   │                │                  │                    │
+   │──Change Plan──►│                  │                    │
+   │                │──GET redirect URL►│                    │
+   │                │◄──URL + token─────│                    │
+   │                │──Redirect────────────────────────────►│
+   │◄─────────────────────────Plan selection UI─────────────│
+   │──Confirm──────────────────────────────────────────────►│
+   │                │◄─────────Callback (pack, price)──────│
+   │◄─Show Summary─│                  │                    │
+   │──Pay──────────►│                  │                    │
+   │                │──POST submitOrder►│                    │
+   │                │                  │──Modify Plan───────►│
+   │                │                  │◄──Entitlement upd──│
+   │                │◄──Order confirm───│                    │
+   │◄─Success──────│                  │                    │
+</code></pre>
+<h3 id="144-api-sequence-manage-lit-cancel-plan">14.4 API Sequence — Manage LIT Cancel Plan</h3>
+<pre><code>Customer          MAPP              HOBS              LIT Platform
+   │                │                  │                    │
+   │──Cancel Plan──►│                  │                    │
+   │◄─Confirm Sheet│                  │                    │
+   │──Yes Cancel───►│                  │                    │
+   │                │──POST submitOrder─►│                    │
+   │                │   (action: O)    │──Unsubscribe───────►│
+   │                │                  │──Suspend entitlement►│
+   │                │◄──Order confirm───│                    │
+   │◄─Success──────│                  │                    │
+</code></pre>
+<hr />
+<h2 id="15-data-fields-system-mapping">15. Data Fields &amp; System Mapping</h2>
+<h3 id="151-lit-entitlement-object-from-hobs">15.1 LIT Entitlement Object (from HOBS)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+<th>Display Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>litSubscriberId</code></td>
+<td>String</td>
+<td>Unique LIT platform subscriber identifier</td>
+<td>Backend/profile (not shown to customer)</td>
+</tr>
+<tr>
+<td><code>packName</code></td>
+<td>String</td>
+<td>Current LIT pack name (e.g., "LIT Premium 6M")</td>
+<td>Summary label badge</td>
+</tr>
+<tr>
+<td><code>channelCount</code></td>
+<td>Integer</td>
+<td>Total channels in pack (e.g., 538)</td>
+<td>Plan card, footer</td>
+</tr>
+<tr>
+<td><code>monthlyPrice</code></td>
+<td>Decimal</td>
+<td>Monthly charge including NCF (e.g., 399.00)</td>
+<td>Plan card, footer</td>
+</tr>
+<tr>
+<td><code>totalPrice</code></td>
+<td>Decimal</td>
+<td>Total for duration (e.g., 2382.00)</td>
+<td>Summary, payment</td>
+</tr>
+<tr>
+<td><code>durationMonths</code></td>
+<td>Integer</td>
+<td>Pack validity period (e.g., 6)</td>
+<td>Duration breakdown</td>
+</tr>
+<tr>
+<td><code>monthlyBreakdown</code></td>
+<td>Decimal</td>
+<td>Per-month cost (e.g., 397.00)</td>
+<td>"₹397 × 6 Months"</td>
+</tr>
+<tr>
+<td><code>ncfAmount</code></td>
+<td>Decimal</td>
+<td>Network capacity fee (e.g., 153.00)</td>
+<td>Footer disclaimer</td>
+</tr>
+<tr>
+<td><code>languages</code></td>
+<td>Array</td>
+<td>Active languages [{ code, name, icon }]</td>
+<td>Language grid, filter chips</td>
+</tr>
+<tr>
+<td><code>genres</code></td>
+<td>Array</td>
+<td>Genre categories [{ name, count }]</td>
+<td>Genre accordion</td>
+</tr>
+<tr>
+<td><code>addons</code></td>
+<td>Array</td>
+<td>Active add-ons [{ name, count }] (e.g., Extra box)</td>
+<td>Plan card right column</td>
+</tr>
+<tr>
+<td><code>validityEndDate</code></td>
+<td>Date</td>
+<td>LIT subscription end date</td>
+<td>Manage Plan (implicit)</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Enum</td>
+<td>ACTIVE, SUSPENDED, CANCELLED</td>
+<td>Determines Manage LIT visibility</td>
+</tr>
+</tbody>
+</table>
+<h3 id="152-lit-callback-payload-lit-mapp">15.2 LIT Callback Payload (LIT → MAPP)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sessionToken</code></td>
+<td>String</td>
+<td>Session identifier from redirection</td>
+</tr>
+<tr>
+<td><code>selectedPackName</code></td>
+<td>String</td>
+<td>New pack selected by customer</td>
+</tr>
+<tr>
+<td><code>channelCount</code></td>
+<td>Integer</td>
+<td>Channels in new pack</td>
+</tr>
+<tr>
+<td><code>monthlyPrice</code></td>
+<td>Decimal</td>
+<td>New monthly price</td>
+</tr>
+<tr>
+<td><code>totalPrice</code></td>
+<td>Decimal</td>
+<td>Total charge for duration</td>
+</tr>
+<tr>
+<td><code>proratedAmount</code></td>
+<td>Decimal</td>
+<td>Prorated charge (upgrades only; 0 for downgrade/swap)</td>
+</tr>
+<tr>
+<td><code>durationMonths</code></td>
+<td>Integer</td>
+<td>Selected duration</td>
+</tr>
+<tr>
+<td><code>languages</code></td>
+<td>Array</td>
+<td>Selected language codes</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>Enum</td>
+<td>CHANGE, UPGRADE, DOWNGRADE, SWAP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="153-submit-order-payload-mapp-hobs">15.3 Submit Order Payload (MAPP → HOBS)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscriberId</code></td>
+<td>String</td>
+<td>Fiber subscriber ID</td>
+</tr>
+<tr>
+<td><code>litSubscriberId</code></td>
+<td>String</td>
+<td>LIT subscriber ID</td>
+</tr>
+<tr>
+<td><code>orders[]</code></td>
+<td>Array</td>
+<td>Array of order items</td>
+</tr>
+<tr>
+<td><code>orders[].productType</code></td>
+<td>String</td>
+<td>"LIT"</td>
+</tr>
+<tr>
+<td><code>orders[].action</code></td>
+<td>Enum</td>
+<td>"I" (add/insert) or "O" (remove)</td>
+</tr>
+<tr>
+<td><code>orders[].packName</code></td>
+<td>String</td>
+<td>LIT pack name</td>
+</tr>
+<tr>
+<td><code>orders[].price</code></td>
+<td>Decimal</td>
+<td>Charge amount</td>
+</tr>
+<tr>
+<td><code>orders[].proratedAmount</code></td>
+<td>Decimal</td>
+<td>Proration (if applicable)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="16-error-handling-edge-cases">16. Error Handling &amp; Edge Cases</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Scenario</th>
+<th>Expected Behavior</th>
+<th>User Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1</td>
+<td>HOBS entitlement API timeout</td>
+<td>Show retry button on Manage Plan screen</td>
+<td>"Unable to load your TV plan. Please try again."</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>LIT redirection URL failure</td>
+<td>Block navigation; show error with retry</td>
+<td>"Something went wrong. Please try again later."</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>LIT callback timeout (customer abandoned LIT webview)</td>
+<td>Return to Manage Plan; no order placed</td>
+<td>"Plan change was not completed."</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>Payment failure after plan selection</td>
+<td>Do not submit order; return to Summary with retry</td>
+<td>"Payment failed. Please try again."</td>
+</tr>
+<tr>
+<td>E5</td>
+<td>Order submission failure (HOBS error)</td>
+<td>Show error; do not charge customer</td>
+<td>"We couldn't process your request. Please contact support."</td>
+</tr>
+<tr>
+<td>E6</td>
+<td>Customer taps back during payment</td>
+<td>Return to Summary; preserve selection</td>
+<td>—</td>
+</tr>
+<tr>
+<td>E7</td>
+<td>No languages selected on Language screen</td>
+<td>Disable Proceed button</td>
+<td>"Please select at least one language"</td>
+</tr>
+<tr>
+<td>E8</td>
+<td>Suspended account attempts access</td>
+<td>Block app login entirely</td>
+<td>"Your account is suspended. Please contact support."</td>
+</tr>
+<tr>
+<td>E9</td>
+<td>Fiber + LIT customer on fiber-only plan change</td>
+<td>Hide/disable LIT options in fiber change flow</td>
+<td>"Your TV plan will remain unchanged" (informational)</td>
+</tr>
+<tr>
+<td>E10</td>
+<td>Network loss during order submission</td>
+<td>Queue retry or show offline message</td>
+<td>"No internet connection. Please check and try again."</td>
+</tr>
+<tr>
+<td>E11</td>
+<td>Customer double-taps "Proceed to pay"</td>
+<td>Debounce button; prevent duplicate orders</td>
+<td>—</td>
+</tr>
+<tr>
+<td>E12</td>
+<td>Prorated amount is ₹0 (same-price swap)</td>
+<td>Show ₹0 proration line; charge only if price differs</td>
+<td>"No additional charge for this change"</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="17-non-functional-requirements">17. Non-Functional Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Category</th>
+<th>Requirement</th>
+<th>Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-01</td>
+<td>Performance</td>
+<td>LIT entitlement data shall load within 2 seconds on Manage Plan screen</td>
+<td>P95 latency ≤ 2000ms</td>
+</tr>
+<tr>
+<td>NFR-02</td>
+<td>Performance</td>
+<td>Redirection URL shall be obtained within 3 seconds</td>
+<td>P95 latency ≤ 3000ms</td>
+</tr>
+<tr>
+<td>NFR-03</td>
+<td>Performance</td>
+<td>Order submission shall complete within 5 seconds post-payment</td>
+<td>P95 latency ≤ 5000ms</td>
+</tr>
+<tr>
+<td>NFR-04</td>
+<td>Performance</td>
+<td>Language selection price update shall reflect within 500ms of toggle</td>
+<td>Client-side perceived instant</td>
+</tr>
+<tr>
+<td>NFR-05</td>
+<td>Availability</td>
+<td>LIT integration APIs shall maintain 99.5% uptime</td>
+<td>Monthly uptime report</td>
+</tr>
+<tr>
+<td>NFR-06</td>
+<td>Security</td>
+<td>All MAPP ↔ HOBS ↔ LIT communication over TLS 1.2+</td>
+<td>Security audit</td>
+</tr>
+<tr>
+<td>NFR-07</td>
+<td>Security</td>
+<td>LIT callback shall be authenticated via session token validation</td>
+<td>Penetration test</td>
+</tr>
+<tr>
+<td>NFR-08</td>
+<td>Security</td>
+<td>PII (RMN, email) shall not be logged in client-side analytics</td>
+<td>Code review</td>
+</tr>
+<tr>
+<td>NFR-09</td>
+<td>Audit</td>
+<td>All LIT orders logged with subscriber ID, action, amount, timestamp, order ID</td>
+<td>HOBS audit trail</td>
+</tr>
+<tr>
+<td>NFR-10</td>
+<td>Compatibility</td>
+<td>Feature supported on iOS 14+ and Android 8+ per TPF release matrix</td>
+<td>Device testing</td>
+</tr>
+<tr>
+<td>NFR-11</td>
+<td>Accessibility</td>
+<td>All CTAs shall have minimum 44×44pt touch target; text contrast ratio ≥ 4.5:1</td>
+<td>WCAG 2.1 AA</td>
+</tr>
+<tr>
+<td>NFR-12</td>
+<td>Localization</td>
+<td>All user-facing strings in English; Hindi support per product roadmap</td>
+<td>i18n review</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="18-assumptions-dependencies">18. Assumptions &amp; Dependencies</h2>
+<h3 id="181-assumptions">18.1 Assumptions</h3>
+<ol>
+<li>LIT platform is operational and provides stable redirection and callback mechanisms at launch</li>
+<li>HOBS wrapper APIs will be deployed to UAT at least 2 weeks before MAPP frontend integration begins</li>
+<li>Fiber plan expiry date is the authoritative source for LIT validity alignment</li>
+<li>Proration logic is owned and calculated by the LIT platform; MAPP is a display layer</li>
+<li>FigJam design (Manage LIT section) is approved and final for development</li>
+<li>Payment gateway supports LIT-specific line items without modification</li>
+<li>Channel logos and language icons are provided by LIT/Content team in required formats</li>
+</ol>
+<h3 id="182-dependencies">18.2 Dependencies</h3>
+<table>
+<thead>
+<tr>
+<th>Dependency</th>
+<th>Owner</th>
+<th>Required By</th>
+<th>Impact if Delayed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HOBS LIT wrapper APIs (all 6 endpoints)</td>
+<td>HOBS Team</td>
+<td>Sprint 1</td>
+<td>Blocks all LIT journeys</td>
+</tr>
+<tr>
+<td>LIT callback payload specification</td>
+<td>LIT Team</td>
+<td>Sprint 1</td>
+<td>Blocks order placement post-redirection</td>
+</tr>
+<tr>
+<td>MAPP callback API endpoint</td>
+<td>MAPP Backend</td>
+<td>Sprint 2</td>
+<td>Blocks LIT → MAPP data handoff</td>
+</tr>
+<tr>
+<td>FigJam design sign-off</td>
+<td>Design Team</td>
+<td>Sprint 1</td>
+<td>Blocks frontend development</td>
+</tr>
+<tr>
+<td>Channel logo assets</td>
+<td>Content Team</td>
+<td>Sprint 2</td>
+<td>Blocks channel browse UI</td>
+</tr>
+<tr>
+<td>Payment flow LIT line item support</td>
+<td>Payment Team</td>
+<td>Sprint 3</td>
+<td>Blocks end-to-end payment testing</td>
+</tr>
+<tr>
+<td>DigiSales integration (if in scope)</td>
+<td>DigiSales Team</td>
+<td>TBD</td>
+<td>Blocks online sales journey</td>
+</tr>
+<tr>
+<td>Autopay automandate file update</td>
+<td>Billing Team</td>
+<td>TBD</td>
+<td>Blocks autopay + LIT scenario</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="19-open-questions-pending-decisions">19. Open Questions &amp; Pending Decisions</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Context</th>
+<th>Owner</th>
+<th>Status</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td>How will LIT be integrated into the online sales journey?</td>
+<td>DigiSales platform may need LIT pack selection during new fiber sale</td>
+<td>Prasad / DigiSales</td>
+<td>Discussion pending</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Will DigiSales Payment Link journey support LIT add-on?</td>
+<td>Payment links sent via SMS/email for remote payment</td>
+<td>Prasad / DigiSales</td>
+<td>Discussion pending</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>What is the impact of 2-step verification (Portal) on LIT journeys?</td>
+<td>Portal-based verification may add a step before payment</td>
+<td>Prasad / DigiSales</td>
+<td>Discussion pending</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Will LIT price be automatically included in the automandate file for autopay customers who purchase LIT standalone?</td>
+<td>Affects recurring billing for autopay + LIT customers</td>
+<td>Billing / Product</td>
+<td>Open</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>If LIT drop without order is allowed, should drop be available across all fiber journeys?</td>
+<td>Affects whether Remove icon appears only in Manage LIT or everywhere</td>
+<td>Product</td>
+<td>Open</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Q6</td>
+<td>What is the refund policy for LIT downgrade mid-cycle?</td>
+<td>Customer downgrades but has paid for higher tier</td>
+<td>Product / Billing</td>
+<td>Open</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Q7</td>
+<td>Should Manage live TV tile persist after cancellation (as "Explore LIT" promotion)?</td>
+<td>Affects Home screen state post-cancel</td>
+<td>Product / Design</td>
+<td>Open</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="20-out-of-scope">20. Out of Scope</h2>
+<ul>
+<li>Combined Fiber + LIT plan change in a single transaction</li>
+<li>Combined Fiber upgrade/downgrade + LIT upgrade/downgrade in a single transaction</li>
+<li>LIT access for suspended (paused, not resumed) customers</li>
+<li>FDO-based future-dated LIT plan changes</li>
+<li>Modifications to one RMN, ownership change, and relocation journeys (BAU)</li>
+<li>LIT Manage and Remove actions in recharge-for-others journey</li>
+<li>LIT first-time purchase UI (documented in scenario matrix; separate design flows)</li>
+<li>LIT nudge/promotion overlay screens (separate design section)</li>
+<li>Web portal access for Manage LIT (mobile app only for this release)</li>
+<li>Multi-screen/stream concurrency management (shown in design but not in Manage LIT scope)</li>
+</ul>
+<hr />
+<h2 id="21-acceptance-criteria-test-scenarios">21. Acceptance Criteria &amp; Test Scenarios</h2>
+<h3 id="211-manage-lit-functional-test-scenarios">21.1 Manage LIT — Functional Test Scenarios</h3>
+<table>
+<thead>
+<tr>
+<th>TC ID</th>
+<th>Scenario</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Scenario Ref</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC-M01</td>
+<td>View current LIT plan</td>
+<td>Login → Home → Manage live TV</td>
+<td>Manage Plan shows correct channel count, price, languages, genres</td>
+<td>#3, #14</td>
+</tr>
+<tr>
+<td>TC-M02</td>
+<td>Change plan — add language</td>
+<td>Change plan → Select Tamil → Proceed → Confirm → Pay</td>
+<td>LIT pack updated with Tamil channels; fiber unchanged</td>
+<td>#3</td>
+</tr>
+<tr>
+<td>TC-M03</td>
+<td>Change plan — upgrade with proration</td>
+<td>Change plan → Select premium pack → Review proration → Pay</td>
+<td>Prorated amount charged; new pack active immediately</td>
+<td>#7</td>
+</tr>
+<tr>
+<td>TC-M04</td>
+<td>Change plan — downgrade</td>
+<td>Change plan → Select smaller pack → Confirm</td>
+<td>Instant downgrade; no FDO; new price reflected</td>
+<td>#9</td>
+</tr>
+<tr>
+<td>TC-M05</td>
+<td>Change plan — swap</td>
+<td>Change plan → Select same-price different pack → Confirm</td>
+<td>Pack swapped; no fiber update; no proration</td>
+<td>#8</td>
+</tr>
+<tr>
+<td>TC-M06</td>
+<td>Cancel plan — confirm</td>
+<td>Cancel plan → Yes, Cancel My Plan</td>
+<td>LIT cancelled; entitlement suspended immediately; success shown</td>
+<td>#6, #10</td>
+</tr>
+<tr>
+<td>TC-M07</td>
+<td>Cancel plan — abandon</td>
+<td>Cancel plan → I Don't Want to Cancel</td>
+<td>Sheet dismissed; LIT remains active</td>
+<td>—</td>
+</tr>
+<tr>
+<td>TC-M08</td>
+<td>Search channels</td>
+<td>Change plan → Your Channels → Search "Star"</td>
+<td>Matching channels displayed</td>
+<td>—</td>
+</tr>
+<tr>
+<td>TC-M09</td>
+<td>Filter by language chip</td>
+<td>Your Channels → Remove "Hindi" chip</td>
+<td>Channel list updates; count recalculated</td>
+<td>—</td>
+</tr>
+<tr>
+<td>TC-M10</td>
+<td>Expand genre category</td>
+<td>Manage Plan → Tap "Sports"</td>
+<td>Sports channels displayed with logos</td>
+<td>—</td>
+</tr>
+<tr>
+<td>TC-M11</td>
+<td>Edit from summary</td>
+<td>Summary → Tap pencil icon</td>
+<td>Navigate back to plan selection; previous selection preserved</td>
+<td>—</td>
+</tr>
+<tr>
+<td>TC-M12</td>
+<td>Remove from summary</td>
+<td>Summary → Tap trash icon</td>
+<td>Cancel confirmation shown</td>
+<td>#6</td>
+</tr>
+<tr>
+<td>TC-M13</td>
+<td>Combined fiber+LIT change blocked</td>
+<td>Fiber plan change screen</td>
+<td>LIT options not visible/disabled</td>
+<td>#4, #11</td>
+</tr>
+<tr>
+<td>TC-M14</td>
+<td>Suspended account blocked</td>
+<td>Login as suspended user</td>
+<td>App login denied; no Manage LIT access</td>
+<td>#13</td>
+</tr>
+<tr>
+<td>TC-M15</td>
+<td>Recharge for others — limited</td>
+<td>Recharge for LIT subscriber</td>
+<td>Continue only; no Manage/Remove</td>
+<td>#19</td>
+</tr>
+</tbody>
+</table>
+<h3 id="212-general-acceptance-criteria">21.2 General Acceptance Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criteria</th>
+<th>Validation Method</th>
+<th>Pass Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All 15 Manage LIT test scenarios pass</td>
+<td>QA regression</td>
+<td>100% pass rate</td>
+</tr>
+<tr>
+<td>All 22 scenario matrix scenarios pass UAT</td>
+<td>Business UAT</td>
+<td>Signed UAT report</td>
+</tr>
+<tr>
+<td>UI matches FigJam Manage LIT design</td>
+<td>Design QA walkthrough</td>
+<td>Zero critical design deviations</td>
+</tr>
+<tr>
+<td>API integration tests pass</td>
+<td>Automated + manual API testing</td>
+<td>All endpoints return expected responses</td>
+</tr>
+<tr>
+<td>Performance benchmarks met</td>
+<td>Load testing</td>
+<td>P95 within NFR thresholds</td>
+</tr>
+<tr>
+<td>Accessibility audit passed</td>
+<td>WCAG review</td>
+<td>AA compliance for Manage LIT screens</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-a-full-scenario-matrix">Appendix A — Full Scenario Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>S.No</th>
+<th>Scenario</th>
+<th>Customer State</th>
+<th>Journey / Use Case</th>
+<th>Key System Behavior</th>
+<th>Manage LIT Relevance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>LIT Add-on Purchase — Standalone</td>
+<td>Fiber, No LIT</td>
+<td>Standalone purchase</td>
+<td>Expiry date sent; Add/Remove order (I)</td>
+<td>❌ Purchase flow</td>
+</tr>
+<tr>
+<td>1a</td>
+<td>Recharge + LIT Add-on</td>
+<td>Fiber, No LIT</td>
+<td>Recharge with LIT</td>
+<td>Charge current + next TPF + LIT</td>
+<td>❌ Purchase flow</td>
+</tr>
+<tr>
+<td>1b</td>
+<td>Immediate Change Plan + LIT</td>
+<td>Fiber, No LIT</td>
+<td>Plan change with LIT</td>
+<td>Change Package order; no FDO</td>
+<td>❌ Purchase flow</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Fiber Change Plan Only</td>
+<td>Fiber + LIT</td>
+<td>Fiber plan change</td>
+<td>LIT unmodifiable; validity aligned</td>
+<td>⚠️ Related — LIT unchanged</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LIT Change Plan Only</td>
+<td>Fiber + LIT</td>
+<td>Manage LIT</td>
+<td>Redirect to LIT; callback; Add/Remove (I &amp; O)</td>
+<td>✅ <strong>Primary flow</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Fiber + LIT Change Plan</td>
+<td>Fiber + LIT</td>
+<td>Combined change</td>
+<td><strong>NOT SUPPORTED</strong></td>
+<td>✅ Must be blocked</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Recharge / Advance Renewal</td>
+<td>Fiber + LIT</td>
+<td>Same-plan renewal</td>
+<td>Combined price from getEndUserDetails</td>
+<td>⚠️ Related — renewal</td>
+</tr>
+<tr>
+<td>6</td>
+<td>LIT Drop / Cancellation</td>
+<td>Fiber + LIT</td>
+<td>Remove LIT</td>
+<td>Add/Remove (O); immediate suspension</td>
+<td>✅ <strong>Cancel flow</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Fiber Continue + LIT Upgrade</td>
+<td>Fiber + LIT</td>
+<td>LIT upgrade</td>
+<td>Prorated + total price; Modify Plan</td>
+<td>✅ Change plan — upgrade</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Fiber Continue + LIT Swap</td>
+<td>Fiber + LIT</td>
+<td>LIT swap</td>
+<td>Same as upgrade; no fiber update</td>
+<td>✅ Change plan — swap</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Fiber Continue + LIT Downgrade</td>
+<td>Fiber + LIT</td>
+<td>LIT downgrade</td>
+<td>Instant; no FDO; Add/Remove order</td>
+<td>✅ Change plan — downgrade</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Fiber Continue + LIT Cancellation</td>
+<td>Fiber + LIT</td>
+<td>LIT cancel</td>
+<td>Add/Remove (O); unsubscribe + suspend</td>
+<td>✅ <strong>Cancel flow</strong></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Fiber + LIT Combined Upgrade/Downgrade</td>
+<td>Fiber + LIT</td>
+<td>Combined change</td>
+<td><strong>NOT ALLOWED</strong></td>
+<td>✅ Must be blocked</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Paused &amp; Resumed + LIT Continue</td>
+<td>Fiber + LIT (paused)</td>
+<td>LIT continuation</td>
+<td>Prorated + total; Add/Remove order</td>
+<td>⚠️ Related — proration</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Paused, Not Resumed / Suspended</td>
+<td>Suspended</td>
+<td>Any LIT journey</td>
+<td><strong>NOT ALLOWED</strong> — no app login</td>
+<td>✅ Must be blocked</td>
+</tr>
+<tr>
+<td>14</td>
+<td>LIT Package &amp; Channel Details</td>
+<td>All</td>
+<td>Display</td>
+<td>HOBS wrapper API</td>
+<td>✅ Manage Plan data</td>
+</tr>
+<tr>
+<td>15</td>
+<td>LIT Subscriber Details</td>
+<td>All</td>
+<td>Profile</td>
+<td>getSubscriberDetails returns LIT ID</td>
+<td>⚠️ Backend</td>
+</tr>
+<tr>
+<td>16</td>
+<td>RMN / Email Update</td>
+<td>All</td>
+<td>Profile update</td>
+<td>HOBS → LIT Update Profile</td>
+<td>⚠️ Backend</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Autopay + LIT Standalone</td>
+<td>Fiber Autopay</td>
+<td>LIT purchase</td>
+<td>Automandate inclusion — <strong>TBD</strong></td>
+<td>❓ Open question</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Manage Services Page</td>
+<td>All</td>
+<td>Service hub</td>
+<td>Promotion if no services</td>
+<td>⚠️ Related — discovery</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Recharge for Others</td>
+<td>Third-party recharge</td>
+<td>LIT active</td>
+<td>Continue only; no Manage/Remove</td>
+<td>✅ Must be restricted</td>
+</tr>
+<tr>
+<td>20</td>
+<td>One RMN</td>
+<td>All</td>
+<td>BAU</td>
+<td>No change</td>
+<td>—</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Ownership Change</td>
+<td>All</td>
+<td>BAU</td>
+<td>No change</td>
+<td>—</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Relocation Journey</td>
+<td>All</td>
+<td>BAU</td>
+<td>No change</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-b-api-catalog">Appendix B — API Catalog</h2>
+<h3 id="b1-hobs-lit-apis-uat">B.1 HOBS LIT APIs (UAT)</h3>
+<pre><code>Base: https://apiuathobs.tataplayfiber.co.in
 
-  <table class="meta-table">
-    <tr><th>Document Version</th><td>1.1</td></tr>
-    <tr><th>Date</th><td>September 17, 2026</td></tr>
-    <tr><th>Status</th><td>Draft</td></tr>
-    <tr><th>Feature</th><td>LIT — Live Internet TV (Manage LIT Module)</td></tr>
-    <tr><th>Design Reference</th><td><a href="https://www.figma.com/board/psByt5QSY6vvmuAOmExFz7/Login-Revamp?node-id=0-1">Login Revamp — FigJam (Manage LIT Section)</a></td></tr>
-    <tr><th>Design Scope</th><td>Manage LIT flows only (Change Plan + Cancel Plan)</td></tr>
-    <tr><th>Source Inputs</th><td>MAPP Scenario Matrix, FigJam Design (Manage LIT section)</td></tr>
-  </table>
-
-  <h2>1. Executive Summary</h2>
-  <p>Tata Play Fiber (TPF) is introducing <strong>LIT (Live Internet TV)</strong> as an add-on service within the Tata Play Fiber Mobile Application (MAPP). This BRD defines business, functional, integration, and UI requirements for the <strong>Manage LIT module</strong>, enabling existing Fiber + LIT subscribers to change or cancel their LIT plan.</p>
-  <p>Manage LIT is accessed from the Home screen Quick Actions via the <strong>Manage live TV</strong> tile <span class="badge">New</span>. The solution coordinates MAPP (frontend), HOBS (order orchestration), and the LIT platform (subscription lifecycle, pricing, proration).</p>
-
-  <h2>2. Scope — Manage LIT Module</h2>
-  <h3>In Scope</h3>
-  <ul>
-    <li>LIT plan change (upgrade, downgrade, swap) via Manage LIT journey</li>
-    <li>LIT cancellation with confirmation and success states</li>
-    <li>Channel and language selection during plan change</li>
-    <li>Plan summary, pricing (including proration), and payment</li>
-    <li>HOBS manage redirection API and MAPP callback integration</li>
-  </ul>
-  <h3>Out of Scope (this module)</h3>
-  <ul>
-    <li>LIT first-time purchase and nudge flows</li>
-    <li>Recharge + LIT add-on journey</li>
-    <li>Fiber plan change (LIT remains unmodified during fiber-only change)</li>
-    <li>Combined Fiber + LIT plan change in single transaction</li>
-  </ul>
-
-  <h2>3. Manage LIT User Flows</h2>
-  <div class="flow-diagram">HOME SCREEN
-  Quick Actions → "Manage live TV" [New]
-         │
-         ▼
-ACTION SELECTOR (Bottom Sheet)
-  "What would you like to do?"
-  ┌──────────────┐  ┌──────────────┐
-  │ Change plan  │  │ Cancel plan  │
-  └──────┬───────┘  └──────┬───────┘
-         │                  │
-         ▼                  ▼
-  CHANGE PLAN FLOW     CANCEL PLAN FLOW
-  (9 screens)          (4 screens)
-  Language → Channels → Plan → Summary → Pay
-                       Confirm → Success</div>
-
-  <h2>4. Screen Inventory — Manage LIT</h2>
-
-  <h3>Flow A: Change Plan</h3>
-  <table class="data">
-    <thead><tr><th>ID</th><th>Screen</th><th>Key Elements</th><th>CTA</th></tr></thead>
-    <tbody>
-      <tr><td>SCR-M01</td><td>Home — Quick Action</td><td>Current plan card, Quick Actions, Manage live TV with New badge</td><td>Tap Manage live TV</td></tr>
-      <tr><td>SCR-M02</td><td>Action Selector</td><td>Bottom sheet: Change plan / Cancel plan</td><td>Select Change plan</td></tr>
-      <tr><td>SCR-M03</td><td>Manage Plan Overview</td><td>Your Plan (price, channels, add-ons), My Channels, genre categories</td><td>Change Plan</td></tr>
-      <tr><td>SCR-M04</td><td>Language Selection</td><td>Multi-select language grid; live channel count + price footer</td><td>Proceed</td></tr>
-      <tr><td>SCR-M05</td><td>Your Channels</td><td>Search, language filter chips, genre categories with counts</td><td>Browse channels</td></tr>
-      <tr><td>SCR-M06</td><td>Plan Details</td><td>Recommended plan card, genre tags, channel icons</td><td>Confirm &amp; Proceed</td></tr>
-      <tr><td>SCR-M07</td><td>Summary (Collapsed)</td><td>Pack card, edit/remove icons, total price</td><td>Proceed to pay</td></tr>
-      <tr><td>SCR-M08</td><td>Summary (Expanded)</td><td>Full pack specs, OTT tags, pricing breakdown</td><td>Proceed to pay</td></tr>
-      <tr><td>SCR-M09</td><td>Payment</td><td>Final order summary</td><td>Complete payment</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Flow B: Cancel Plan</h3>
-  <table class="data">
-    <thead><tr><th>ID</th><th>Screen</th><th>Key Elements</th><th>CTA</th></tr></thead>
-    <tbody>
-      <tr><td>SCR-M02</td><td>Action Selector</td><td>Bottom sheet with Cancel plan option</td><td>Select Cancel plan</td></tr>
-      <tr><td>SCR-M10</td><td>Cancel Confirmation</td><td>Sad face icon, warning copy, content loss message</td><td>Yes, Cancel My Plan</td></tr>
-      <tr><td>SCR-M11</td><td>Cancel Success</td><td>Green checkmark, success message, dimmed background</td><td>Return to Home</td></tr>
-    </tbody>
-  </table>
-
-  <h2>5. Functional Requirements — Manage LIT</h2>
-  <table class="data">
-    <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
-    <tbody>
-      <tr><td>FR-M1</td><td>Display Manage live TV quick action on Home for Fiber + LIT subscribers</td><td>Must Have</td></tr>
-      <tr><td>FR-M2</td><td>Present action selector with Change plan and Cancel plan options</td><td>Must Have</td></tr>
-      <tr><td>FR-M3</td><td>Change plan invokes HOBS manage/getRedirectionUrl and redirects to LIT</td><td>Must Have</td></tr>
-      <tr><td>FR-M4</td><td>Receive LIT callback and place Add/Remove order (I &amp; O)</td><td>Must Have</td></tr>
-      <tr><td>FR-M5</td><td>Display prorated price + total price for LIT upgrade</td><td>Must Have</td></tr>
-      <tr><td>FR-M6</td><td>LIT downgrade processes instantly; FDO not applicable</td><td>Must Have</td></tr>
-      <tr><td>FR-M7</td><td>Cancel shows confirmation with content access loss warning</td><td>Must Have</td></tr>
-      <tr><td>FR-M8</td><td>On confirm cancel, submit Add/Remove order (O); suspend immediately</td><td>Must Have</td></tr>
-      <tr><td>FR-M9</td><td>Cancel success screen confirms plan cancellation</td><td>Must Have</td></tr>
-      <tr><td>FR-M10</td><td>Manage Plan shows current pack, channels, genres, My Channels link</td><td>Must Have</td></tr>
-      <tr><td>FR-M11</td><td>Channel search supports language and genre filtering</td><td>Must Have</td></tr>
-      <tr><td>FR-M12</td><td>Combined Fiber + LIT plan change NOT supported</td><td>Must Have</td></tr>
-    </tbody>
-  </table>
-
-  <h2>6. Business Rules</h2>
-  <table class="data">
-    <thead><tr><th>Rule</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr><td>BR-M01</td><td>LIT validity aligns with Fiber plan validity</td></tr>
-      <tr><td>BR-M02</td><td>FDO not applicable for LIT plan changes</td></tr>
-      <tr><td>BR-M03</td><td>LIT downgrade processed instantly</td></tr>
-      <tr><td>BR-M04</td><td>LIT cancellation suspends entitlement immediately</td></tr>
-      <tr><td>BR-M05</td><td>Suspended accounts cannot access Manage LIT</td></tr>
-      <tr><td>BR-M06</td><td>Recharge-for-others: Continue only; no Manage/Remove</td></tr>
-      <tr><td>BR-M07</td><td>Prorated pricing for LIT upgrade</td></tr>
-    </tbody>
-  </table>
-
-  <h2>7. API Requirements</h2>
-  <table class="data">
-    <thead><tr><th>API</th><th>Endpoint</th><th>Purpose</th></tr></thead>
-    <tbody>
-      <tr><td>LIT Manage Redirection</td><td>GET /lit/manage/getRedirectionUrl</td><td>Manage/change plan URL</td></tr>
-      <tr><td>LIT Entitlement</td><td>GET /lit/getSubscriberEntitlement/{subscriberId}</td><td>Fetch entitlements</td></tr>
-      <tr><td>Pack to Channel</td><td>GET /lit/packtochannel/{packName}</td><td>Channel list for pack</td></tr>
-      <tr><td>Submit Order</td><td>POST submitOrder</td><td>LIT Add/Remove orders (I/O)</td></tr>
-      <tr><td>Subscriber Details</td><td>GET getSubscriberDetails</td><td>Return LIT Subscriber ID</td></tr>
-      <tr><td>LIT Callback</td><td>POST [TBD]/lit/callback</td><td>Receive LIT platform response</td></tr>
-    </tbody>
-  </table>
-  <p><strong>Base URL (UAT):</strong> https://apiuathobs.tataplayfiber.co.in</p>
-
-  <h2>8. UI/UX Specifications</h2>
-  <table class="data">
-    <thead><tr><th>Component</th><th>Specification</th></tr></thead>
-    <tbody>
-      <tr><td>Color Theme</td><td>Dark theme; deep purple headers; magenta/pink primary CTAs</td></tr>
-      <tr><td>Bottom Sheet</td><td>Action selector, cancel confirmation; drag indicator</td></tr>
-      <tr><td>Sticky Footer</td><td>Price summary + primary CTA; chevron-up to expand</td></tr>
-      <tr><td>Filter Chips</td><td>Removable language tags; genre filter chips</td></tr>
-      <tr><td>Language Grid</td><td>3-column selectable language icon cards</td></tr>
-      <tr><td>Genre Accordion</td><td>Collapsible rows with channel counts</td></tr>
-      <tr><td>Plan Card</td><td>Label badge, channels, price, edit/remove icons</td></tr>
-    </tbody>
-  </table>
-
-  <h2>9. Scenario Matrix (Supporting Backend)</h2>
-  <div class="note">The following scenarios from the MAPP integration matrix support Manage LIT and related LIT journeys.</div>
-  <table class="data">
-    <thead><tr><th>#</th><th>Scenario</th><th>Manage LIT Relevance</th></tr></thead>
-    <tbody>
-      <tr><td>3</td><td>LIT Change Plan Only</td><td><strong>Primary Manage LIT flow</strong></td></tr>
-      <tr><td>6</td><td>LIT Drop / Cancellation</td><td><strong>Cancel Plan flow</strong></td></tr>
-      <tr><td>7</td><td>LIT Upgrade (Standalone)</td><td>Change Plan — upgrade path</td></tr>
-      <tr><td>8</td><td>LIT Swap (Standalone)</td><td>Change Plan — swap path</td></tr>
-      <tr><td>9</td><td>LIT Downgrade (Standalone)</td><td>Change Plan — downgrade path</td></tr>
-      <tr><td>10</td><td>LIT Cancellation (Standalone)</td><td>Cancel Plan flow</td></tr>
-      <tr><td>4</td><td>Fiber + LIT Combined Change</td><td>NOT SUPPORTED</td></tr>
-      <tr><td>11</td><td>Combined Upgrade/Downgrade</td><td>NOT ALLOWED</td></tr>
-      <tr><td>13</td><td>Suspended Account</td><td>NOT ALLOWED — no app login</td></tr>
-      <tr><td>14</td><td>LIT Package &amp; Channel Details</td><td>Manage Plan display</td></tr>
-      <tr><td>15</td><td>LIT Subscriber Details</td><td>Profile integration</td></tr>
-      <tr><td>19</td><td>Recharge for Others</td><td>Continue only; no Manage/Remove</td></tr>
-    </tbody>
-  </table>
-
-  <h2>10. Acceptance Criteria</h2>
-  <ul>
-    <li>UAT Scenario 3: LIT Change Plan via Manage LIT passes end-to-end</li>
-    <li>UAT Scenarios 6/10: LIT cancellation with immediate suspension passes</li>
-    <li>UAT Scenarios 7–9: Upgrade/Downgrade/Swap with correct pricing passes</li>
-    <li>Manage LIT UI matches FigJam design (Change Plan + Cancel Plan flows)</li>
-    <li>All HOBS wrapper APIs return expected responses</li>
-  </ul>
-
-  <h2>11. Open Questions</h2>
-  <table class="data">
-    <thead><tr><th>#</th><th>Question</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Q1</td><td>Autopay: Will LIT price be included in automandate file?</td><td>Open</td></tr>
-      <tr><td>Q2</td><td>Online sales journey LIT integration</td><td>Pending DigiSales discussion</td></tr>
-      <tr><td>Q3</td><td>DigiSales Payment Link journey</td><td>Pending discussion</td></tr>
-      <tr><td>Q4</td><td>2-step verification (Portal) impact</td><td>Pending discussion</td></tr>
-    </tbody>
-  </table>
-
-  <div class="footer">
-    Tata Play Fiber | LIT — Live Internet TV | Business Requirements Document v1.1 | September 17, 2026
-  </div>
+GET  /lit/subscribe/getRedirectionUrl     — New LIT subscription redirection
+GET  /lit/manage/getRedirectionUrl        — Manage/change plan redirection
+GET  /lit/getSubscriberEntitlement/{id}   — LIT entitlement for subscriber
+GET  /lit/packtochannel/{packName}        — Channels in a LIT pack
+POST /lit/lit/updateSubscriberProfile     — Sync RMN/email to LIT
+</code></pre>
+<h3 id="b2-additional-entitlement-api">B.2 Additional Entitlement API</h3>
+<pre><code>GET https://apiuathobs.tataplay.com/SubscriberServices/subscriberEntitlements
+</code></pre>
+<h3 id="b3-existing-mapphobs-apis-modified">B.3 Existing MAPP/HOBS APIs (Modified)</h3>
+<pre><code>POST submitOrder           — LIT add-on orders (I/O), Change Package
+GET  getEndUserDetails     — Combined Fiber + LIT renewal pricing
+GET  getSubscriberDetails  — Include LIT Subscriber ID
+</code></pre>
+<h3 id="b4-new-mapp-api">B.4 New MAPP API</h3>
+<pre><code>POST [TBD]/lit/callback    — Receive LIT platform response post-redirection
+</code></pre>
+<hr />
+<h2 id="appendix-c-ui-copy-messaging-reference">Appendix C — UI Copy &amp; Messaging Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Context</th>
+<th>Copy</th>
+<th>Screen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick Action Label</td>
+<td>Manage live TV</td>
+<td>SCR-M01</td>
+</tr>
+<tr>
+<td>Quick Action Badge</td>
+<td>New</td>
+<td>SCR-M01</td>
+</tr>
+<tr>
+<td>Home Greeting</td>
+<td>Good Morning {Customer Name}!</td>
+<td>SCR-M01</td>
+</tr>
+<tr>
+<td>Current Plan Label</td>
+<td>CURRENT PLAN</td>
+<td>SCR-M01</td>
+</tr>
+<tr>
+<td>Action Selector Heading</td>
+<td>What would you like to do?</td>
+<td>SCR-M02</td>
+</tr>
+<tr>
+<td>Action Selector Subtext</td>
+<td>Manage your Live TV plan in just a few taps</td>
+<td>SCR-M02</td>
+</tr>
+<tr>
+<td>Change Plan Option</td>
+<td>Change plan</td>
+<td>SCR-M02</td>
+</tr>
+<tr>
+<td>Cancel Plan Option</td>
+<td>Cancel plan</td>
+<td>SCR-M02</td>
+</tr>
+<tr>
+<td>Manage Plan Header</td>
+<td>Your Plan</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>My Channels Link</td>
+<td>My Channels</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>TV Channels Label</td>
+<td>TV Channels</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>Extra Box Label</td>
+<td>Extra box</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>Discovery Prompt</td>
+<td>Discover a best fit</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>Change Plan CTA</td>
+<td>Change Plan</td>
+<td>SCR-M03</td>
+</tr>
+<tr>
+<td>Language Instruction</td>
+<td>Select one or more languages &amp; get all channels of selected languages</td>
+<td>SCR-M04</td>
+</tr>
+<tr>
+<td>Channel Footer</td>
+<td>{N} Channels | ₹{price}/month (Includes Rs {ncf} network fee)</td>
+<td>SCR-M04</td>
+</tr>
+<tr>
+<td>Proceed CTA</td>
+<td>Proceed</td>
+<td>SCR-M04</td>
+</tr>
+<tr>
+<td>Channel Search Placeholder</td>
+<td>Search channels in this pack</td>
+<td>SCR-M05</td>
+</tr>
+<tr>
+<td>Plan Review Heading</td>
+<td>Here's a plan based on your selection</td>
+<td>SCR-M06</td>
+</tr>
+<tr>
+<td>Plan Card</td>
+<td>{N} TV Channels at ₹{price}/month</td>
+<td>SCR-M06</td>
+</tr>
+<tr>
+<td>Confirm CTA</td>
+<td>Confirm &amp; Proceed</td>
+<td>SCR-M06</td>
+</tr>
+<tr>
+<td>Summary Header</td>
+<td>Summary</td>
+<td>SCR-M07</td>
+</tr>
+<tr>
+<td>Channel Count</td>
+<td>{N} TV Channels</td>
+<td>SCR-M07</td>
+</tr>
+<tr>
+<td>Duration Breakdown</td>
+<td>₹{monthly} × {months} Months</td>
+<td>SCR-M07</td>
+</tr>
+<tr>
+<td>Payment CTA</td>
+<td>Proceed to pay</td>
+<td>SCR-M07</td>
+</tr>
+<tr>
+<td>Cancel Heading</td>
+<td>We're sad to see you go!</td>
+<td>SCR-M10</td>
+</tr>
+<tr>
+<td>Cancel Warning</td>
+<td>Your plan will be cancelled and you will no longer have access to your content. Are you sure you want to cancel?</td>
+<td>SCR-M10</td>
+</tr>
+<tr>
+<td>Cancel Confirm</td>
+<td>Yes, Cancel My Plan</td>
+<td>SCR-M10</td>
+</tr>
+<tr>
+<td>Cancel Dismiss</td>
+<td>I Don't Want to Cancel</td>
+<td>SCR-M10</td>
+</tr>
+<tr>
+<td>Cancel Success</td>
+<td>Plan cancelled successfully!</td>
+<td>SCR-M11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="document-approval">Document Approval</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Name</th>
+<th>Signature</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product Owner</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Technical Lead (MAPP)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Technical Lead (HOBS)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Design Lead</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>QA Lead</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Business Stakeholder</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of Document — Version 1.2</em></p>
+<div class="footer">Tata Play Fiber | LIT - Live Internet TV | Business Requirements Document v1.2 | September 17, 2026</div>
 </div>
 </body>
 </html>
